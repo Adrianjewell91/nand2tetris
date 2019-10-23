@@ -1,29 +1,21 @@
 <?php
-// How that assemblage works without translation, 
-// How can I build symbol translation component. 
-
-// Basically, when I find a symbol, then put it in the tree,
-
-
 include "parser.php";
 include "code.php";
 include "symboltree.php";
 
 $files = array(
-    // "add" => "Add",
     "max" => "Max",
     "pong" => "Pong",
     "rect" => "Rect"
 );
 
-// The test suite:
-// assemble("pong", "Pong");
 assemble("add", "Add");
 foreach ($files as $path => $name) {
     assemble($path, $name);
     assemble($path, $name . "L");
 }
 
+// Assembles a file.
 function assemble($path, $name) {
     $symbols = new SymbolTree();
     $parser = new Parser("../{$path}/$name");
@@ -31,10 +23,7 @@ function assemble($path, $name) {
     while ($parser->hasMoreCommands()) {
         $command = $parser->commandType();
         if ($command == "L") {
-            $symbol = $parser->symbol();
-            echo $symbol . "\n";
-            $symbols->addJump($symbol, $count);
-            echo $symbols->get($symbol) ."\n";
+            $symbols->addJump($parser->symbol(), $count);
         }
         
         if ($command == "A" || $command == "C") {
@@ -48,10 +37,7 @@ function assemble($path, $name) {
     while ($parser->hasMoreCommands()) {
         $command = $parser->commandType();
         if ($command == "A") {
-            $symbol = $parser->symbol();
-            echo $symbol . "\n";
-            $symbols->add($symbol);
-            echo $symbols->get($symbol) ."\n";
+            $symbols->add($parser->symbol());
         } 
         $parser->advance();
     }
@@ -64,37 +50,28 @@ function assemble($path, $name) {
         $translation = "";
         switch ($parser->commandType()) {
             case "A":
-            // echo $parser->line;
-            $symbol = $symbols->get($parser->symbol());
-            // echo $symbol ."\n";
-            $translation = "0" . sprintf('%015b',  $symbol);
-            fwrite($output, $translation . "\n");
-            // echo $translation;
-            break;
-            case "L":
-            break;
+                $symbol = $symbols->get($parser->symbol());
+                $translation = "0" . sprintf('%015b',  $symbol);
+                fwrite($output, $translation . "\n");
+                break;
             case "C":
-            echo $parser->line;
-            $dest = $code->dest(trim($parser->dest()));
-            
-            $comp = $code->comp(trim($parser->comp()));
-            
-            $jump = $code->jump(trim($parser->jump()));
-            
-            $translation = "111" . $comp . $dest . $jump; 
-            fwrite($output, $translation . "\n");
-            // echo $translation;
-            break;
+                $dest = $code->dest(trim($parser->dest()));
+                $comp = $code->comp(trim($parser->comp()));
+                $jump = $code->jump(trim($parser->jump()));
+                $translation = "111" . $comp . $dest . $jump; 
+                fwrite($output, $translation . "\n");
+                break;
             case "//":
-            break;
+                break;
             default:
-            // Throw error;
+                // Throw error;
         }
         
         $parser->advance();
     }
-    
-    // fclose($output);
 }
+
+// Tests the files assembled with this project.
+include "test.php";
 
 ?>

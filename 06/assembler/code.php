@@ -74,18 +74,15 @@ class Code
     public function dest($d)
     {
         return $this->destinations[$d];
-        //return binary destination mapping.
     }
 
     public function comp($c)
     {
         return $this->comparisons[$c];
-        //return binary comparison mapping.
     }
 
     public function jump($j)
     {
         return $this->jumps[$j];
-        //return binary jump mapping
     }
 }

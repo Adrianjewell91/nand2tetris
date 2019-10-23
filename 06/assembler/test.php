@@ -1,8 +1,5 @@
 <?php
-// Test all files are the same. 
-
 $files = array(
-    // "add" => "Add",
     "max" => "Max",
     "pong" => "Pong",
     "rect" => "Rect"

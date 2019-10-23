@@ -18,7 +18,6 @@ class Parser
     
     public function advance()
     {
-        // echo $this->line;
         $this->line = fgets($this->file);
         return $this->hasMoreCommands();
     }
@@ -28,9 +27,7 @@ class Parser
         if (substr($this->line, 0, 2) == "//") {
             return "//";
         }
-         
         $this->line = preg_split("/\s/", ltrim($this->line))[0] . "\n";
-        // echo $this->line;
         
         switch ($this->line[0]) {
             case "@":
@@ -45,12 +42,11 @@ class Parser
                 return "L";
         }
         
-        // echo $this->line;
         if (strpos($this->line, "=") != false || strpos($this->line, ";") != false) {
             return "C";
         }
 
-        return "Empty";
+        return "Empty"; // Or throw Error
     }
     
     public function symbol()
