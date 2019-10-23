@@ -1,0 +1,46 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/03/a/PC.hdl
+
+/**
+ * A 16-bit counter with load and reset control bits.
+ * if      (reset[t] == 1) out[t+1] = 0
+ * else if (load[t] == 1)  out[t+1] = in[t]
+ * else if (inc[t] == 1)   out[t+1] = out[t] + 1  (integer addition) Use the incrementer.
+ * else                    out[t+1] = out[t]
+ */
+
+CHIP PC {
+    IN in[16],load,inc,reset;
+    OUT out[16];
+
+    PARTS:
+    Inc16 (in=loop1, out=INCin);
+    
+    Mux (a=false, b=true, sel=reset, out=m1);
+    Mux (a=m1, b=true, sel=load, out=m2);
+    Mux (a=m2, b=true, sel=inc, out=loadbit);
+
+    Mux16 (a=in, b=INCin, sel=inc, out=n1);
+    Mux16 (a=n1, b=in, sel=load, out=n2);
+    Mux16 (a=n2, b=false, sel=reset, out=result);
+
+    Register(in=result, load=loadbit, out=out, out=loop1);
+}
+
+//Sub optimal , Solution 1: Could this be optimized?
+// Key code: Mux8Way16 (a=in, b=INCin, c=in, d=in, e=false, f=false, g=false, h=false, sel[2]=reset, sel[1]=load, sel[0]=inc, out=result);
+// Test in this order:
+// If reset=1（load=1, in=false); MUX16 false and in[16], also using reset as a sel with MUX 0 and 1 to get load. 
+// If load    (load=1 and in=in); 
+// If inc     (load==1 and in=INCout(t-1));
+// else       (load=0, in=in);
+
+//For load MUX carry the one through three tests.
+
+//For in MUX the corresponding are 0[16], 0[16], 0[16], 0[16], in, in+1, in, in.  sel=reset,load,inc. 
+
+// Last night I dream't about escaping China, and something else too that I forgot. 
+
+//Solution 2 : three mux gates.
