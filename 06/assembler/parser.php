@@ -2,7 +2,7 @@
 
 class Parser
 {
-    private $path = '';
+    private $path;
     private $file;
     public $line;
     
@@ -24,10 +24,10 @@ class Parser
     
     public function commandType()
     {
+        $this->__trim();
         if (substr($this->line, 0, 2) == "//") {
             return "//";
         }
-        $this->line = preg_split("/\s/", ltrim($this->line))[0] . "\n";
         
         switch ($this->line[0]) {
             case "@":
@@ -51,11 +51,10 @@ class Parser
     
     public function symbol()
     {
-        // echo $this->line;
         if ($this->line[0] == "(") {
-            return trim(substr($this->line, 1, -2));
+            return substr($this->line, 1, -2);
         } else {
-            return trim(substr($this->line, 1));
+            return substr($this->line, 1);
         }
     }
     
@@ -96,5 +95,9 @@ class Parser
         $this->path = $path;
         $this->file = fopen("{$this->path}.asm", "r");
         $this->line = fgets($this->file);
+    }
+
+    private function __trim() {
+        $this->line = preg_split("/\s/", ltrim($this->line))[0] . "\n";
     }
 }

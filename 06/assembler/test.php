@@ -1,6 +1,8 @@
 <?php
 include "assembler.php";
 
+
+//Build
 $files = array(
     "add" => "Add",
     "max" => "Max",
@@ -17,6 +19,8 @@ foreach ($files as $path => $name) {
     }
 }
 
+
+//Test
 $files = array(
     "max" => "Max",
     "pong" => "Pong",

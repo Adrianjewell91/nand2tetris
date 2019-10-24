@@ -39,10 +39,8 @@ class SymbolTree {
     }
 
     public function add($symbol) {
-        // Only add it if it's not a number and not in there already. 
-        // var_dump($this->map);
         $symbol = trim($symbol);
-        if (is_numeric($symbol) || $this->map[$symbol] != false || $this->map[$symbol] == "0") {
+        if (is_numeric($symbol) || array_key_exists($symbol, $this->map)) {
             return 0;
         } else {
             $this->map[$symbol] = $this->counter;
@@ -53,7 +51,7 @@ class SymbolTree {
 
     public function get($symbol) {
         $symbol = trim($symbol);
-        if ($this->map[$symbol] != false || $this->map[$symbol] == "0") {
+        if (array_key_exists($symbol, $this->map)) {
             return $this->map[$symbol];
         } else { return $symbol; }
     }

@@ -19,7 +19,7 @@ class Assembler {
     }
     
     public function assemble() {
-        $this->make();
+        $this->ref();
         $this->map();
         $this->encode();
     }
@@ -58,7 +58,7 @@ class Assembler {
         );
     }
     
-    private function make() {
+    private function ref() {
         $count = 0;
         $this->iterate(function(&$count){
             $command = $this->parser->commandType();
@@ -81,5 +81,4 @@ class Assembler {
         });
     }  
 }
-
 ?>
