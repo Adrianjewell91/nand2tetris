@@ -98,6 +98,7 @@ class Parser
     }
 
     private function __trim() {
+        // Could be different 
         $this->line = preg_split("/\s/", ltrim($this->line))[0] . "\n";
     }
 }
