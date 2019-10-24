@@ -3,23 +3,6 @@ include "parser.php";
 include "code.php";
 include "symboltree.php";
 
-$files = array(
-    "add" => "Add",
-    "max" => "Max",
-    "pong" => "Pong",
-    "rect" => "Rect"
-);
-
-foreach ($files as $path => $name) {
-    $assembler = new Assembler(SymbolTree, Code, Parser, $path, $name);
-    $assembler->assemble();
-    if ($name != "Add") {
-        $assembler = new Assembler(SymbolTree, Code, Parser, $path, $name . "L");
-        $assembler->assemble();
-    }
-
-}
-
 class Assembler {
     public $parser;
     public $symbols;
@@ -85,24 +68,18 @@ class Assembler {
             
             if ($command == "A" || $command == "C") {
                 $count += 1;
-            }}, $count);
-        }
-        
-        private function map() {
-            $this->iterate(
-                function() {
-                    $command = $this->parser->commandType();
-                    if ($command == "A") {
-                        $this->symbols->add($this->parser->symbol());
-                    }
-                }
-            );
-        }
-        
+            }
+        }, $count);
     }
-    
-    
-    
-    // Tests the files assembled with this project.
-    include "test.php";
-    ?>
+        
+    private function map() {
+        $this->iterate(function() {
+            $command = $this->parser->commandType();
+            if ($command == "A") {
+                $this->symbols->add($this->parser->symbol());
+            }
+        });
+    }  
+}
+
+?>

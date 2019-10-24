@@ -1,4 +1,22 @@
 <?php
+include "assembler.php";
+
+$files = array(
+    "add" => "Add",
+    "max" => "Max",
+    "pong" => "Pong",
+    "rect" => "Rect"
+);
+
+foreach ($files as $path => $name) {
+    $assembler = new Assembler(SymbolTree, Code, Parser, $path, $name);
+    $assembler->assemble();
+    if ($name != "Add") {
+        $assembler = new Assembler(SymbolTree, Code, Parser, $path, $name . "L");
+        $assembler->assemble();
+    }
+}
+
 $files = array(
     "max" => "Max",
     "pong" => "Pong",
