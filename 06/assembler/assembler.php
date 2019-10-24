@@ -4,74 +4,105 @@ include "code.php";
 include "symboltree.php";
 
 $files = array(
+    "add" => "Add",
     "max" => "Max",
     "pong" => "Pong",
     "rect" => "Rect"
 );
 
-assemble("add", "Add");
 foreach ($files as $path => $name) {
-    assemble($path, $name);
-    assemble($path, $name . "L");
+    $assembler = new Assembler(SymbolTree, Code, Parser, $path, $name);
+    $assembler->assemble();
+    if ($name != "Add") {
+        $assembler = new Assembler(SymbolTree, Code, Parser, $path, $name . "L");
+        $assembler->assemble();
+    }
+
 }
 
-// Assembles a file.
-function assemble($path, $name) {
-    $symbols = new SymbolTree();
-    $parser = new Parser("../{$path}/$name");
-    $count = 0;
-    while ($parser->hasMoreCommands()) {
-        $command = $parser->commandType();
-        if ($command == "L") {
-            $symbols->addJump($parser->symbol(), $count);
-        }
-        
-        if ($command == "A" || $command == "C") {
-            $count+=1;
-        }
-
-        $parser->advance();
-    }
-
-    $parser = new Parser("../{$path}/$name");
-    while ($parser->hasMoreCommands()) {
-        $command = $parser->commandType();
-        if ($command == "A") {
-            $symbols->add($parser->symbol());
-        } 
-        $parser->advance();
-    }
-        
-    $parser = new Parser("../{$path}/$name");
-    $code = new Code();
-    $output = fopen("../$path/{$name}COMP.hack", "w+");
+class Assembler {
+    public $parser;
+    public $symbols;
+    public $encoder;
+    public $path;
+    public $output;
     
-    while ($parser->hasMoreCommands()) {
-        $translation = "";
-        switch ($parser->commandType()) {
-            case "A":
-                $symbol = $symbols->get($parser->symbol());
-                $translation = "0" . sprintf('%015b',  $symbol);
-                fwrite($output, $translation . "\n");
-                break;
-            case "C":
-                $dest = $code->dest(trim($parser->dest()));
-                $comp = $code->comp(trim($parser->comp()));
-                $jump = $code->jump(trim($parser->jump()));
-                $translation = "111" . $comp . $dest . $jump; 
-                fwrite($output, $translation . "\n");
-                break;
-            case "//":
-                break;
-            default:
-                // Throw error;
+    function __construct($symbolTree, $encoder, $parser, $path, $output) {
+        $this->path = "../{$path}/{$output}";
+        $this->symbols = new $symbolTree();
+        $this->encoder = new $encoder();
+        $this->parser = new $parser($this->path);
+        $this->output = fopen("../$path/{$output}COMP.hack", "w+");
+    }
+    
+    public function assemble() {
+        $this->make();
+        $this->map();
+        $this->encode();
+    }
+    
+    private function iterate($cb, ...$args) {
+        $this->parser = new $this->parser($this->path);
+        while ($this->parser->hasMoreCommands()) {
+            $cb($args[0]);
+            $this->parser->advance();
+        }
+    }
+    
+    private function encode() {
+        $this->iterate(
+            function() {
+                $translation = "";
+                switch ($this->parser->commandType()) {
+                    case "A":
+                    $symbol = $this->symbols->get($this->parser->symbol());
+                    $translation = "0" . sprintf('%015b',  $symbol);
+                    fwrite($this->output, $translation . "\n");
+                    break;
+                    case "C":
+                    $dest = $this->encoder->dest(trim($this->parser->dest()));
+                    $comp = $this->encoder->comp(trim($this->parser->comp()));
+                    $jump = $this->encoder->jump(trim($this->parser->jump()));
+                    $translation = "111" . $comp . $dest . $jump;
+                    fwrite($this->output, $translation . "\n");
+                    break;
+                    case "//":
+                    break;
+                    default:
+                    // Throw error;
+                }
+            }
+        );
+    }
+    
+    private function make() {
+        $count = 0;
+        $this->iterate(function(&$count){
+            $command = $this->parser->commandType();
+            if ($command == "L") {
+                $this->symbols->addJump($this->parser->symbol(), $count);
+            }
+            
+            if ($command == "A" || $command == "C") {
+                $count += 1;
+            }}, $count);
         }
         
-        $parser->advance();
+        private function map() {
+            $this->iterate(
+                function() {
+                    $command = $this->parser->commandType();
+                    if ($command == "A") {
+                        $this->symbols->add($this->parser->symbol());
+                    }
+                }
+            );
+        }
+        
     }
-}
-
-// Tests the files assembled with this project.
-include "test.php";
-
-?>
+    
+    
+    
+    // Tests the files assembled with this project.
+    include "test.php";
+    ?>
