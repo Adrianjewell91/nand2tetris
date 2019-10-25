@@ -1,16 +1,20 @@
 package Translator;
 
+import java.io.FileNotFoundException;
+
 class Translator {
-    public static void main(String[] args) {
-        System.out.println("hello");        
+    static Parser parser;
+    public static void main(String[] args) throws FileNotFoundException {
+        parser = new Parser("/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm");
+        iterate();
+    }
+
+    public static void iterate() {
+        while (parser.hasMoreCommands()) {
+            parser.advance();
+            
+            System.out.println(parser.line);
+        }
     }
 }
 
-// Do I want to write unit tests for each function?  No
-// Do I want to follow the predetermined api guideline? Yes 
-// Do I want to implement the terminal command option? Yes. 
-
-// General idea:
-
-// Codewriter iterates through the lines until there are no more.
-// The api decouples the labeling from the writing.

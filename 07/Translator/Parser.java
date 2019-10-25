@@ -1,16 +1,25 @@
 package Translator;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Parser {
-    Parser(String path) {
-        
+    Scanner scanner;
+    String line;
+
+    Parser(String p) throws FileNotFoundException {
+        scanner = new Scanner(new File(p));
     }
 
     public Boolean hasMoreCommands() {
-        return true;
+        return scanner.hasNextLine();
     }
 
     public void advance() {
-
+        line = scanner.nextLine();
+        line = line.split("//")[0];
+        line = line.trim();
     }
 
     public String commandType() {
