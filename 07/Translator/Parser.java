@@ -2,11 +2,20 @@ package Translator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Parser {
     Scanner scanner;
     String line;
+    Set<String> arithmetics = new HashSet<String>(
+            Arrays.asList(new String[] { "add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not" }));
+    Set<String> stacks = new HashSet<String>(
+            Arrays.asList(new String[] { "push", "pop" }));
+    Set<String> controls = new HashSet<String>(
+            Arrays.asList(new String[] { "if-goto", "goto", "call", "function", "label" }));
 
     Parser(String p) throws FileNotFoundException {
         scanner = new Scanner(new File(p));
@@ -23,14 +32,25 @@ public class Parser {
     }
 
     public String commandType() {
+        String[] words = line.split(" ");
+        if (arithmetics.contains(words[0])) {
+            return "C_ARITHMETIC";
+        } else if (words.length == 3 && stacks.contains(words[0])) {
+            return String.format("C_%s", words[0].toUpperCase());
+        } else if (words.length == 2 && controls.contains(words[0])) {
+            return String.format("C_%s", words[0].toUpperCase());
+        } else if (words[0].equals("return")) { 
+            return "return";
+        }
+
         return "";
     }
 
     public String arg1() {
-        return "";
+        return line.split(" ")[1];
     }
 
     public int arg2() {
-        return 0;
+        return Integer.parseInt(line.split(" ")[2]);
     }
 }
