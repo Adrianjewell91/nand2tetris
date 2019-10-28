@@ -10,10 +10,8 @@ D=A
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //push constant 8
 @8 
@@ -21,10 +19,8 @@ D=A
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //add
 @SP 

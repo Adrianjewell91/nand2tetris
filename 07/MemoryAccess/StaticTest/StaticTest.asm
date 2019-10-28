@@ -10,10 +10,8 @@ D=A
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //push constant 333
 @333 
@@ -21,10 +19,8 @@ D=A
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //push constant 888
 @888 
@@ -32,34 +28,80 @@ D=A
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //pop static 8
+@null 
+D=M 
+@8 
+D=D+A
+@SP 
+A=M
+M=D
+A=A-1 
+D=M
+A=A+1
+A=M
+M=D 
+@SP
+M=M-1 
 
 //pop static 3
+@null 
+D=M 
+@3 
+D=D+A
+@SP 
+A=M
+M=D
+A=A-1 
+D=M
+A=A+1
+A=M
+M=D 
+@SP
+M=M-1 
 
 //pop static 1
+@null 
+D=M 
+@1 
+D=D+A
+@SP 
+A=M
+M=D
+A=A-1 
+D=M
+A=A+1
+A=M
+M=D 
+@SP
+M=M-1 
 
 //push static 3
+@null 
+D=M 
+@3 
+A=D+A 
+D=M 
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //push static 1
+@null 
+D=M 
+@1 
+A=D+A 
+D=M 
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //sub
 @SP 
@@ -73,13 +115,16 @@ D=A+1
 M=D 
 
 //push static 8
+@null 
+D=M 
+@8 
+A=D+A 
+D=M 
 @SP 
 A=M 
 M=D 
-A=A+1 
-D=A 
 @SP 
-M=D 
+M=M+1 
 
 //add
 @SP 

@@ -4,6 +4,8 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CodeWriter {
     private File file;
@@ -65,14 +67,34 @@ public class CodeWriter {
     public void writePushPop(String command, String segment, Integer index) {
         String code = "";
         String value = "";
-        if (segment.equals("constant")) value = String.format("@%s \nD=A \n", index);
+        Map<String,String> map = new HashMap<String, String>();
+        map.put("local", "LCL");
+        map.put("argument", "ARG");
+        map.put("this", "THIS");
+        map.put("that", "THAT");
+        map.put("temp", "R5");
         
         if (command.equals("C_PUSH")) {
-            code = String.format("%s@SP \nA=M \nM=D \nA=A+1 \nD=A \n@SP \nM=D \n", value);
+
+            // Handle "temp" here at some point.s
+            if (segment.equals("constant")) {
+                value = String.format("@%s \nD=A \n", index); 
+            } else if (segment.equals("temp")) {
+                value = String.format("@%s \nD=A \n@%s \nA=D+A\n D=M \n", map.get(segment), index); 
+            } else {
+                value = String.format("@%s \nD=M \n@%s \nA=D+A \nD=M \n", map.get(segment), index);
+            }
+            // code = String.format("%s@SP \nA=M \nM=D \nA=A+1 \nD=A \n@SP \nM=D \n", value);
+            code = String.format("%s@SP \nA=M \nM=D \n@SP \nM=M+1 \n", value);
         } else if (command.equals("C_POP")) {
-            // POP - takes the value at SP puts it at segment[index], (constants won't be a segment here).
-            // decrement SP1. 
+            if (segment.equals("temp")) {
+                code = String.format("@%s \nD=A \n@%s \nD=D+A \n@SP \nA=M\nM=D\nA=A-1 \nD=M\nA=A+1\nA=M\nM=D \n@SP\nM=M-1 \n", map.get(segment), index);
+            } else {
+                code = String.format("@%s \nD=M \n@%s \nD=D+A\n@SP \nA=M\nM=D\nA=A-1 \nD=M\nA=A+1\nA=M\nM=D \n@SP\nM=M-1 \n", map.get(segment), index);
+            }
+            
         }
+
         writeLine(code);
     }
 
