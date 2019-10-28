@@ -11,30 +11,30 @@ class Translator {
         parser = new Parser(
                 "/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm");
         String fileName = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.asm";
-        translateTo(fileName);
+        translateTo(fileName,"SimpleAdd");
 
         parser = new Parser(
                 "/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.vm");
         fileName = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.asm";
-        translateTo(fileName);
+        translateTo(fileName,"StackTest");
 
         parser = new Parser("/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/BasicTest/BasicTest.vm");
         fileName = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/BasicTest/BasicTest.asm";
-        translateTo(fileName);
+        translateTo(fileName,"BasicTest");
 
         parser = new Parser(
                 "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.vm");
         fileName = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.asm";
-        translateTo(fileName);
+        translateTo(fileName,"PointerTest");
 
         parser = new Parser(
                 "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/StaticTest/StaticTest.vm");
         fileName = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/StaticTest/StaticTest.asm";
-        translateTo(fileName);
+        translateTo(fileName,"StaticTest");
     }
 
-    public static void translateTo(String fileName) throws IOException {
-        writer = new CodeWriter(fileName);
+    public static void translateTo(String fileName, String name) throws IOException {
+        writer = new CodeWriter(fileName, name);
         while (parser.hasMoreCommands()) {
             parser.advance();
             writer.writeLine("//" + parser.line);

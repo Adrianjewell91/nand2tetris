@@ -32,10 +32,8 @@ M=D
 M=M+1 
 
 //pop static 8
-@null 
-D=M 
-@8 
-D=D+A
+@StaticTest.8 
+D=A 
 @SP 
 A=M
 M=D
@@ -48,10 +46,8 @@ M=D
 M=M-1 
 
 //pop static 3
-@null 
-D=M 
-@3 
-D=D+A
+@StaticTest.3 
+D=A 
 @SP 
 A=M
 M=D
@@ -64,10 +60,8 @@ M=D
 M=M-1 
 
 //pop static 1
-@null 
-D=M 
-@1 
-D=D+A
+@StaticTest.1 
+D=A 
 @SP 
 A=M
 M=D
@@ -80,10 +74,7 @@ M=D
 M=M-1 
 
 //push static 3
-@null 
-D=M 
-@3 
-A=D+A 
+@StaticTest.3 
 D=M 
 @SP 
 A=M 
@@ -92,10 +83,7 @@ M=D
 M=M+1 
 
 //push static 1
-@null 
-D=M 
-@1 
-A=D+A 
+@StaticTest.1 
 D=M 
 @SP 
 A=M 
@@ -115,10 +103,7 @@ D=A+1
 M=D 
 
 //push static 8
-@null 
-D=M 
-@8 
-A=D+A 
+@StaticTest.8 
 D=M 
 @SP 
 A=M 

@@ -15,10 +15,10 @@ M=D
 M=M+1 
 
 //pop pointer 0
-@null 
-D=M 
+@R3 
+D=A 
 @0 
-D=D+A
+D=D+A 
 @SP 
 A=M
 M=D
@@ -40,10 +40,10 @@ M=D
 M=M+1 
 
 //pop pointer 1
-@null 
-D=M 
+@R3 
+D=A 
 @1 
-D=D+A
+D=D+A 
 @SP 
 A=M
 M=D
@@ -106,8 +106,8 @@ M=D
 M=M-1 
 
 //push pointer 0
-@null 
-D=M 
+@R3 
+D=A 
 @0 
 A=D+A 
 D=M 
@@ -118,8 +118,8 @@ M=D
 M=M+1 
 
 //push pointer 1
-@null 
-D=M 
+@R3 
+D=A 
 @1 
 A=D+A 
 D=M 

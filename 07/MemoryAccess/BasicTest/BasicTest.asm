@@ -287,8 +287,8 @@ M=D
 @R5 
 D=A 
 @6 
-A=D+A
- D=M 
+A=D+A 
+D=M 
 @SP 
 A=M 
 M=D 
