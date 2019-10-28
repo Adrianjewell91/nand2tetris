@@ -1,3 +1,9 @@
+//
+//
+//
+//
+//
+//
 //push constant 111
 @111 
 D=A 
@@ -56,6 +62,15 @@ D=A
 M=D 
 
 //sub
+@SP 
+A=M-1 
+D=M  
+A=A-1 
+D=M-D 
+M=D 
+D=A+1 
+@SP 
+M=D 
 
 //push static 8
 @SP 
@@ -68,9 +83,7 @@ M=D
 
 //add
 @SP 
-D=M 
-D=D-1 
-A=D 
+A=M-1 
 D=M  
 A=A-1 
 D=D+M 

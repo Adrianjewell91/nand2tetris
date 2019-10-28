@@ -1,3 +1,9 @@
+//
+//
+//
+//
+//
+//
 //push constant 7
 @7 
 D=A 
@@ -22,9 +28,7 @@ M=D
 
 //add
 @SP 
-D=M 
-D=D-1 
-A=D 
+A=M-1 
 D=M  
 A=A-1 
 D=D+M 

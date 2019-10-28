@@ -37,24 +37,21 @@ class Translator {
         writer = new CodeWriter(fileName);
         while (parser.hasMoreCommands()) {
             parser.advance();
+            writer.writeLine("//" + parser.line);
             switch (parser.commandType()) {
                 case "C_ARITHMETIC":
-                    writer.writeLine("//" + parser.line);
                     writer.writeArithmetic(parser.line);
                     break;
                     case "C_PUSH":
-                    writer.writeLine("//" + parser.line);
                     writer.writePushPop("C_PUSH", parser.arg1(), parser.arg2());
                     break;
                     case "C_POP":
-                    writer.writeLine("//" + parser.line);
                     writer.writePushPop("C_POP", parser.arg1(), parser.arg2());
                     break;
                 default:
                     break;
 
             }
-            // System.out.println(parser.commandType());
         }
         writer.close();
     }

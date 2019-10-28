@@ -1,3 +1,10 @@
+//
+//
+//
+//
+//
+//
+//
 //push constant 3030
 @3030 
 D=A 
@@ -70,9 +77,7 @@ M=D
 
 //add
 @SP 
-D=M 
-D=D-1 
-A=D 
+A=M-1 
 D=M  
 A=A-1 
 D=D+M 
@@ -91,6 +96,15 @@ D=A
 M=D 
 
 //sub
+@SP 
+A=M-1 
+D=M  
+A=A-1 
+D=M-D 
+M=D 
+D=A+1 
+@SP 
+M=D 
 
 //push that 6
 @SP 
@@ -103,9 +117,7 @@ M=D
 
 //add
 @SP 
-D=M 
-D=D-1 
-A=D 
+A=M-1 
 D=M  
 A=A-1 
 D=D+M 
