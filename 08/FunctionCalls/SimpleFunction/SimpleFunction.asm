@@ -112,7 +112,7 @@ D=A+1
 M=D 
 
 //return
-//    *ARG = pop() // pop the value into the register to which arg points. 
+//*ARG = pop() // pop the value into the register to which arg points. 
 @SP 
 M=M-1  
 A=M   

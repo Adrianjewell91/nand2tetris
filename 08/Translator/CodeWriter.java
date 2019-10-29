@@ -25,9 +25,7 @@ public class CodeWriter {
     }
 
     public void setFileName(String fileName) throws IOException {
-        file = new File(fileName);
-        fr = new FileWriter(file);
-        br = new BufferedWriter(fr);
+        this.fileName = fileName;
     }
 
     public void writeArithmetic(String command) {
@@ -107,6 +105,7 @@ public class CodeWriter {
     }
 
     public void writeReturn() {
+        // The code.
         // //    *ARG = pop() // pop the value into the register to which arg points. 
         // @SP 
         // M=M-1  
@@ -158,10 +157,10 @@ public class CodeWriter {
         // @SP
         // A=M
         // A=M-1
-        // A=M
+        // A=M // set the next instruction as the RAM[FRAME-5]
         // 0;JMP
         // //    goto RET
-        String code = "//    *ARG = pop() // pop the value into the register to which arg points. \n@SP \nM=M-1  \nA=M   \nD=M  \n@ARG \nA=M \nM=D \n//    SP = ARG+1\n@ARG \nD=M+1 \n@SP \nM=D \n//    FRAME = LCL\n//    THAT = *(FRAME-1)\n@LCL \nM=M-1\nA=M\nD=M \n@THAT \nM=D\n//    THIS = *(FRAME-2)\n@LCL \nM=M-1\nA=M\nD=M \n@THIS \nM=D\n//    ARG = *(FRAME-3)\n@LCL \nM=M-1\nA=M\nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@LCL \nD=M-1 \n@SP \nA=M\nM=D \nA=D \nD=M\n@LCL\nM=D\n//    RET = *(FRAME-5)\n@SP\nA=M\nA=M-1 \nA=M\n0;JMP\n//    goto RET\n";
+        String code = "//*ARG = pop() // pop the value into the register to which arg points. \n@SP \nM=M-1  \nA=M   \nD=M  \n@ARG \nA=M \nM=D \n//    SP = ARG+1\n@ARG \nD=M+1 \n@SP \nM=D \n//    FRAME = LCL\n//    THAT = *(FRAME-1)\n@LCL \nM=M-1\nA=M\nD=M \n@THAT \nM=D\n//    THIS = *(FRAME-2)\n@LCL \nM=M-1\nA=M\nD=M \n@THIS \nM=D\n//    ARG = *(FRAME-3)\n@LCL \nM=M-1\nA=M\nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@LCL \nD=M-1 \n@SP \nA=M\nM=D \nA=D \nD=M\n@LCL\nM=D\n//    RET = *(FRAME-5)\n@SP\nA=M\nA=M-1 \nA=M\n0;JMP\n//    goto RET\n";
 
         writeLine(code);
     }
