@@ -77,10 +77,91 @@ public class CodeWriter {
     public void writePushPop(String command, String segment, Integer index) {
         String code = "";
         if (command.equals("C_PUSH")) {
-            code = _formatPUSH(command, segment, index);
+            code = _formatPUSH(segment, index);
         } else if (command.equals("C_POP")) {
-            code = _formatPOP(command, segment, index);
+            code = _formatPOP(segment, index);
         }
+
+        writeLine(code);
+    }
+
+    public void writeLabel(String label) {
+        writeLine("(" + label + ")" + "\n");
+    }
+
+    public void writeGoto(String label) {
+        writeLine(String.format("@%s \n0;JMP \n", label));
+    }
+
+    public void writeIfGoto(String label) {
+        writeLine(String.format("@SP \nM=M-1 \nA=M \nD=M \n@%s \nD;JNE \n", label)); 
+    }
+
+    public void writeFunction(String name, Integer arguments) {
+        String code = String.format("(%s)\n", name);
+        for (int i = 0; i < arguments; i++) {
+            code += _formatPUSH("constant", 0);
+        }
+
+        writeLine(code);
+    }
+
+    public void writeReturn() {
+        // //    *ARG = pop() // pop the value into the register to which arg points. 
+        // @SP 
+        // M=M-1  
+        // A=M   
+        // D=M  
+        // @ARG 
+        // A=M 
+        // M=D 
+        // //    SP = ARG+1
+        // @ARG 
+        // D=M+1 
+        // @SP 
+        // M=D 
+        // //    FRAME = LCL
+        // //    THAT = *(FRAME-1)
+        // @LCL 
+        // M=M-1
+        // A=M
+        // D=M 
+        // @THAT 
+        // M=D
+
+        // //    THIS = *(FRAME-2)
+        // @LCL 
+        // M=M-1
+        // A=M
+        // D=M 
+        // @THIS 
+        // M=D
+
+        // //    ARG = *(FRAME-3)
+        // @LCL 
+        // M=M-1
+        // A=M
+        // D=M 
+        // @ARG 
+        // M=D
+        // //    LCL = *(FRAME-4)
+        // @LCL 
+        // D=M-1
+        // @SP 
+        // A=M
+        // M=D
+        // A=D 
+        // D=M
+        // @LCL
+        // M=D
+        // //    RET = *(FRAME-5)
+        // @SP
+        // A=M
+        // A=M-1
+        // A=M
+        // 0;JMP
+        // //    goto RET
+        String code = "//    *ARG = pop() // pop the value into the register to which arg points. \n@SP \nM=M-1  \nA=M   \nD=M  \n@ARG \nA=M \nM=D \n//    SP = ARG+1\n@ARG \nD=M+1 \n@SP \nM=D \n//    FRAME = LCL\n//    THAT = *(FRAME-1)\n@LCL \nM=M-1\nA=M\nD=M \n@THAT \nM=D\n//    THIS = *(FRAME-2)\n@LCL \nM=M-1\nA=M\nD=M \n@THIS \nM=D\n//    ARG = *(FRAME-3)\n@LCL \nM=M-1\nA=M\nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@LCL \nD=M-1 \n@SP \nA=M\nM=D \nA=D \nD=M\n@LCL\nM=D\n//    RET = *(FRAME-5)\n@SP\nA=M\nA=M-1 \nA=M\n0;JMP\n//    goto RET\n";
 
         writeLine(code);
     }
@@ -103,7 +184,7 @@ public class CodeWriter {
         }
     };
 
-    private String _formatPOP(String command, String segment, Integer index) {
+    private String _formatPOP(String segment, Integer index) {
         if (segment.equals("temp") || segment.equals("pointer")) {
             return String.format(
                     "@%s \nD=A \n@%s \nD=D+A \n@SP \nA=M\nM=D\nA=A-1 \nD=M\nA=A+1\nA=M\nM=D \n@SP\nM=M-1 \n",
@@ -118,7 +199,7 @@ public class CodeWriter {
         }
     }
 
-    private String _formatPUSH(String command, String segment, Integer index) {
+    private String _formatPUSH(String segment, Integer index) {
         String loadValue = "";
         if (segment.equals("constant")) {
             loadValue = String.format("@%s \nD=A \n", index);
