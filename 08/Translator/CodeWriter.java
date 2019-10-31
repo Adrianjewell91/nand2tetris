@@ -111,8 +111,19 @@ public class CodeWriter {
     }
 
     public void writeReturn() {
-        // The code.
-        // // *ARG = pop() // pop the value into the register to which arg points.
+        // The code:
+        //// FRAME = LCL
+        // @LCL
+        // D=M
+        // @R13
+        // M=D // Stored Frame in R13
+        //// RET = *(FRAME-5)
+        // @5
+        // A=D-A
+        // D=M
+        // @R14
+        // M=D // Store *(Frame-5) in R14
+        //// *ARG = pop()
         // @SP
         // M=M-1
         // A=M
@@ -120,104 +131,40 @@ public class CodeWriter {
         // @ARG
         // A=M
         // M=D
-        // // SP = ARG+1
+        //// SP = ARG+1
         // @ARG
         // D=M+1
         // @SP
         // M=D
-        // FRAME = LCL 
-        // // THAT = *(FRAME-1)
-        // @LCL
-        // M=M-1
-        // A=M
+        //// THAT = *(FRAME-1)
+        // @R13
+        // AM=M-1
         // D=M
         // @THAT
         // M=D
-
-        // // THIS = *(FRAME-2)
-        // @LCL
-        // M=M-1
-        // A=M
+        //// THIS = *(FRAME-2)
+        // @R13
+        // AM=M-1
         // D=M
         // @THIS
         // M=D
-
-        // // ARG = *(FRAME-3)
-        // @LCL
-        // M=M-1
-        // A=M
+        //// ARG = *(FRAME-3)
+        // @R13
+        // AM=M-1
         // D=M
         // @ARG
         // M=D
-        // // LCL = *(FRAME-4)
-        // @LCL
-        // D=M-1
+        //// LCL = *(FRAME-4)
         // @R13
-        // M=D
-        // A=D
+        // AM=M-1
         // D=M
         // @LCL
         // M=D
-        // // RET = *(FRAME-5)
-        // @R13
-        // A=M-1
-        // A=M // set the next instruction as the RAM[FRAME-5]
+        //// goto RET
+        // @R14
+        // A=M
         // 0;JMP
-        // // goto RET
-////    FRAME = LCL 
-//@LCL 
-//D=M
-//@R13
-//M=D // Stored Frame in R13 
-////    RET = *(FRAME-5) 
-//@5 
-//A=D-A 
-//D=M
-//@R14 
-//M=D // Store *(Frame-5) in R14 
-////    *ARG = pop()
-//@SP
-//M=M-1
-//A=M
-//D=M
-//@ARG
-//A=M
-//M=D
-////    SP = ARG+1
-//@ARG
-//D=M+1
-//@SP
-//M=D
-////    THAT = *(FRAME-1)
-//@R13 
-//AM=M-1 
-//D=M 
-//@THAT 
-//M=D 
-////    THIS = *(FRAME-2)
-//@R13 
-//AM=M-1 
-//D=M 
-//@THIS 
-//M=D 
-////    ARG = *(FRAME-3)
-//@R13 
-//AM=M-1 
-//D=M 
-//@ARG 
-//M=D
-////    LCL = *(FRAME-4)
-//@R13 
-//AM=M-1 
-//D=M 
-//@LCL 
-//M=D
-////    goto RET
-//@R14 
-//A=M
-//0;JMP
         String code = "//    FRAME = LCL \n@LCL \nD=M\n@R13\nM=D // Stored Frame in R13 \n//    RET = *(FRAME-5) \n@5 \nA=D-A \nD=M\n@R14 \nM=D // Store *(Frame-5) in R14 \n//    *ARG = pop()\n@SP\nM=M-1\nA=M\nD=M\n@ARG\nA=M\nM=D\n//    SP = ARG+1\n@ARG\nD=M+1\n@SP\nM=D\n//    THAT = *(FRAME-1)\n@R13 \nAM=M-1 \nD=M \n@THAT \nM=D \n//    THIS = *(FRAME-2)\n@R13 \nAM=M-1 \nD=M \n@THIS \nM=D \n//    ARG = *(FRAME-3)\n@R13 \nAM=M-1 \nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@R13 \nAM=M-1 \nD=M \n@LCL \nM=D\n//    goto RET\n@R14 \nA=M\n0;JMP\n";
-        // the old one: String code = "//*ARG = pop() // pop the value into the register to which arg points. \n@SP \nM=M-1  \nA=M   \nD=M  \n@ARG \nA=M \nM=D \n//    SP = ARG+1\n@ARG \nD=M+1 \n@SP \nM=D \n//    FRAME = LCL\n//    THAT = *(FRAME-1)\n@LCL \nM=M-1\nA=M\nD=M \n@THAT \nM=D\n//    THIS = *(FRAME-2)\n@LCL \nM=M-1\nA=M\nD=M \n@THIS \nM=D\n//    ARG = *(FRAME-3)\n@LCL \nM=M-1\nA=M\nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@LCL \nD=M-1 \n@R13 \nM=D \nA=D  \nD=M  \n@LCL \nM=D\n//    RET = *(FRAME-5)\n@R13 \nA=M-1 \nA=M\n0;JMP\n//    goto RET\n";
         writeLine(code);
     }
 
