@@ -112,57 +112,57 @@ D=A+1
 M=D 
 
 //return
-//*ARG = pop() // pop the value into the register to which arg points. 
-@SP 
-M=M-1  
-A=M   
-D=M  
-@ARG 
-A=M 
-M=D 
-//    SP = ARG+1
-@ARG 
-D=M+1 
-@SP 
-M=D 
-//    FRAME = LCL
-//    THAT = *(FRAME-1)
+//    FRAME = LCL 
 @LCL 
+D=M
+@R13
+M=D // Stored Frame in R13 
+//    RET = *(FRAME-5) 
+@5 
+A=D-A 
+D=M
+@R14 
+M=D // Store *(Frame-5) in R14 
+//    *ARG = pop()
+@SP
 M=M-1
 A=M
+D=M
+@ARG
+A=M
+M=D
+//    SP = ARG+1
+@ARG
+D=M+1
+@SP
+M=D
+//    THAT = *(FRAME-1)
+@R13 
+AM=M-1 
 D=M 
 @THAT 
-M=D
+M=D 
 //    THIS = *(FRAME-2)
-@LCL 
-M=M-1
-A=M
+@R13 
+AM=M-1 
 D=M 
 @THIS 
-M=D
+M=D 
 //    ARG = *(FRAME-3)
-@LCL 
-M=M-1
-A=M
+@R13 
+AM=M-1 
 D=M 
 @ARG 
 M=D
 //    LCL = *(FRAME-4)
+@R13 
+AM=M-1 
+D=M 
 @LCL 
-D=M-1 
-@SP 
-A=M
-M=D 
-A=D 
-D=M
-@LCL
 M=D
-//    RET = *(FRAME-5)
-@SP
-A=M
-A=M-1 
+//    goto RET
+@R14 
 A=M
 0;JMP
-//    goto RET
 
 //

@@ -19,16 +19,16 @@ M=M+1
 D=A 
 @0 
 D=D+A 
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //push constant 3040
 @3040 
@@ -44,16 +44,16 @@ M=M+1
 D=A 
 @1 
 D=D+A 
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //push constant 32
 @32 
@@ -69,16 +69,16 @@ M=M+1
 D=M 
 @2 
 D=D+A
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //push constant 46
 @46 
@@ -94,16 +94,16 @@ M=M+1
 D=M 
 @6 
 D=D+A
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //push pointer 0
 @R3 

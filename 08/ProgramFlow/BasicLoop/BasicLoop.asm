@@ -20,16 +20,16 @@ M=M+1
 D=M 
 @0 
 D=D+A
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //label LOOP_START
 (LOOP_START)
@@ -74,16 +74,16 @@ M=D
 D=M 
 @0 
 D=D+A
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //push argument 0
 @ARG 
@@ -122,16 +122,16 @@ M=D
 D=M 
 @0 
 D=D+A
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //push argument 0
 @ARG 

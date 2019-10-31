@@ -1,4 +1,5 @@
 
+CPUEmulator.sh FunctionCalls/StaticsTest/StaticsTest.tst; 
 CPUEmulator.sh FunctionCalls/FibonacciElement/FibonacciElement.tst; 
 CPUEmulator.sh FunctionCalls/SimpleFunction/SimpleFunction.tst; 
 CPUEmulator.sh ProgramFlow/BasicLoop/BasicLoop.tst; 

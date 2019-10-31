@@ -13,9 +13,9 @@ public class Parser {
     Set<String> arithmetics = new HashSet<String>(
             Arrays.asList(new String[] { "add", "sub", "neg", "eq", "gt", "lt", "and", "or", "not" }));
     Set<String> stacks = new HashSet<String>(
-            Arrays.asList(new String[] { "push", "pop", "function" }));
+            Arrays.asList(new String[] { "push", "pop", "function", "call"}));
     Set<String> controls = new HashSet<String>(
-            Arrays.asList(new String[] { "if-goto", "goto", "call", "label" }));
+            Arrays.asList(new String[] { "if-goto", "goto", "label" }));
 
     Parser(String p) throws FileNotFoundException {
         scanner = new Scanner(new File(p));

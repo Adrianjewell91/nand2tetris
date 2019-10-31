@@ -13,6 +13,7 @@ public class CodeWriter {
     private FileWriter fr = null;
     private BufferedWriter br = null;
     private Integer enumerator = 0;
+    private Integer returnEnumerator = 0;
     private Map<String, String> map = Map.ofEntries(entry("local", "LCL"), entry("argument", "ARG"),
             entry("this", "THIS"), entry("that", "THAT"), entry("temp", "R5"), entry("pointer", "R3"));
 
@@ -26,6 +27,11 @@ public class CodeWriter {
 
     public void setFileName(String fileName) throws IOException {
         this.fileName = fileName;
+    }
+
+    public void writeBootstrapCode() {
+        writeLine("@256 \nD=A \n@SP \nM=D\n");
+        writeCall("Sys.init", 0);
     }
 
     public void writeArithmetic(String command) {
@@ -92,7 +98,7 @@ public class CodeWriter {
     }
 
     public void writeIfGoto(String label) {
-        writeLine(String.format("@SP \nM=M-1 \nA=M \nD=M \n@%s \nD;JNE \n", label)); 
+        writeLine(String.format("@SP \nM=M-1 \nA=M \nD=M \n@%s \nD;JNE \n", label));
     }
 
     public void writeFunction(String name, Integer arguments) {
@@ -106,63 +112,142 @@ public class CodeWriter {
 
     public void writeReturn() {
         // The code.
-        // //    *ARG = pop() // pop the value into the register to which arg points. 
-        // @SP 
-        // M=M-1  
-        // A=M   
-        // D=M  
-        // @ARG 
-        // A=M 
-        // M=D 
-        // //    SP = ARG+1
-        // @ARG 
-        // D=M+1 
-        // @SP 
-        // M=D 
-        // //    FRAME = LCL
-        // //    THAT = *(FRAME-1)
-        // @LCL 
+        // // *ARG = pop() // pop the value into the register to which arg points.
+        // @SP
         // M=M-1
         // A=M
-        // D=M 
-        // @THAT 
+        // D=M
+        // @ARG
+        // A=M
+        // M=D
+        // // SP = ARG+1
+        // @ARG
+        // D=M+1
+        // @SP
+        // M=D
+        // FRAME = LCL 
+        // // THAT = *(FRAME-1)
+        // @LCL
+        // M=M-1
+        // A=M
+        // D=M
+        // @THAT
         // M=D
 
-        // //    THIS = *(FRAME-2)
-        // @LCL 
+        // // THIS = *(FRAME-2)
+        // @LCL
         // M=M-1
         // A=M
-        // D=M 
-        // @THIS 
+        // D=M
+        // @THIS
         // M=D
 
-        // //    ARG = *(FRAME-3)
-        // @LCL 
+        // // ARG = *(FRAME-3)
+        // @LCL
         // M=M-1
         // A=M
-        // D=M 
-        // @ARG 
+        // D=M
+        // @ARG
         // M=D
-        // //    LCL = *(FRAME-4)
-        // @LCL 
+        // // LCL = *(FRAME-4)
+        // @LCL
         // D=M-1
-        // @SP 
-        // A=M
+        // @R13
         // M=D
-        // A=D 
+        // A=D
         // D=M
         // @LCL
         // M=D
-        // //    RET = *(FRAME-5)
-        // @SP
-        // A=M
+        // // RET = *(FRAME-5)
+        // @R13
         // A=M-1
         // A=M // set the next instruction as the RAM[FRAME-5]
         // 0;JMP
-        // //    goto RET
-        String code = "//*ARG = pop() // pop the value into the register to which arg points. \n@SP \nM=M-1  \nA=M   \nD=M  \n@ARG \nA=M \nM=D \n//    SP = ARG+1\n@ARG \nD=M+1 \n@SP \nM=D \n//    FRAME = LCL\n//    THAT = *(FRAME-1)\n@LCL \nM=M-1\nA=M\nD=M \n@THAT \nM=D\n//    THIS = *(FRAME-2)\n@LCL \nM=M-1\nA=M\nD=M \n@THIS \nM=D\n//    ARG = *(FRAME-3)\n@LCL \nM=M-1\nA=M\nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@LCL \nD=M-1 \n@SP \nA=M\nM=D \nA=D \nD=M\n@LCL\nM=D\n//    RET = *(FRAME-5)\n@SP\nA=M\nA=M-1 \nA=M\n0;JMP\n//    goto RET\n";
+        // // goto RET
+////    FRAME = LCL 
+//@LCL 
+//D=M
+//@R13
+//M=D // Stored Frame in R13 
+////    RET = *(FRAME-5) 
+//@5 
+//A=D-A 
+//D=M
+//@R14 
+//M=D // Store *(Frame-5) in R14 
+////    *ARG = pop()
+//@SP
+//M=M-1
+//A=M
+//D=M
+//@ARG
+//A=M
+//M=D
+////    SP = ARG+1
+//@ARG
+//D=M+1
+//@SP
+//M=D
+////    THAT = *(FRAME-1)
+//@R13 
+//AM=M-1 
+//D=M 
+//@THAT 
+//M=D 
+////    THIS = *(FRAME-2)
+//@R13 
+//AM=M-1 
+//D=M 
+//@THIS 
+//M=D 
+////    ARG = *(FRAME-3)
+//@R13 
+//AM=M-1 
+//D=M 
+//@ARG 
+//M=D
+////    LCL = *(FRAME-4)
+//@R13 
+//AM=M-1 
+//D=M 
+//@LCL 
+//M=D
+////    goto RET
+//@R14 
+//A=M
+//0;JMP
+        String code = "//    FRAME = LCL \n@LCL \nD=M\n@R13\nM=D // Stored Frame in R13 \n//    RET = *(FRAME-5) \n@5 \nA=D-A \nD=M\n@R14 \nM=D // Store *(Frame-5) in R14 \n//    *ARG = pop()\n@SP\nM=M-1\nA=M\nD=M\n@ARG\nA=M\nM=D\n//    SP = ARG+1\n@ARG\nD=M+1\n@SP\nM=D\n//    THAT = *(FRAME-1)\n@R13 \nAM=M-1 \nD=M \n@THAT \nM=D \n//    THIS = *(FRAME-2)\n@R13 \nAM=M-1 \nD=M \n@THIS \nM=D \n//    ARG = *(FRAME-3)\n@R13 \nAM=M-1 \nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@R13 \nAM=M-1 \nD=M \n@LCL \nM=D\n//    goto RET\n@R14 \nA=M\n0;JMP\n";
+        // the old one: String code = "//*ARG = pop() // pop the value into the register to which arg points. \n@SP \nM=M-1  \nA=M   \nD=M  \n@ARG \nA=M \nM=D \n//    SP = ARG+1\n@ARG \nD=M+1 \n@SP \nM=D \n//    FRAME = LCL\n//    THAT = *(FRAME-1)\n@LCL \nM=M-1\nA=M\nD=M \n@THAT \nM=D\n//    THIS = *(FRAME-2)\n@LCL \nM=M-1\nA=M\nD=M \n@THIS \nM=D\n//    ARG = *(FRAME-3)\n@LCL \nM=M-1\nA=M\nD=M \n@ARG \nM=D\n//    LCL = *(FRAME-4)\n@LCL \nD=M-1 \n@R13 \nM=D \nA=D  \nD=M  \n@LCL \nM=D\n//    RET = *(FRAME-5)\n@R13 \nA=M-1 \nA=M\n0;JMP\n//    goto RET\n";
+        writeLine(code);
+    }
+
+    public void writeCall(String functionName, Integer numArgs) {
+        String code = "";
+        // push return-address, the line number down below.
+        code += String.format("@RETURN_ADDRESS%s \nD=A \n@SP \nA=M \nM=D \n@SP \nM=M+1 \n", returnEnumerator);
+        // push LCL
+        code += _writeCallHelper("LCL");
+        // push ARG
+        code += _writeCallHelper("ARG");
+        // push THIS
+        code += _writeCallHelper("THIS");
+        // push THAT
+        code += _writeCallHelper("THAT");
+        // ARG = SP-numArgs-5
+        code += String.format("@SP \nD=M \n@%s \nD=D-A \n@5 \nD=D-A\n@ARG \nM=D \n", numArgs);
+        // LCL = SP
+        code += "@SP \nD=M \n@LCL \nM=D \n";
+        // goto functionName
+        code += String.format("@%s \n0;JMP \n", functionName);
+        // (return-address) - a label
+        code += String.format("(RETURN_ADDRESS%s)\n", returnEnumerator);
+        returnEnumerator++;
 
         writeLine(code);
+    }
+
+    private String _writeCallHelper(String label) {
+        return String.format("@%s \nD=M \n@SP \nA=M \nM=D \n@SP \nM=M+1 \n", label);
     }
 
     public void writeLine(String line) {
@@ -184,18 +269,15 @@ public class CodeWriter {
     };
 
     private String _formatPOP(String segment, Integer index) {
+        String loadValue = "";
         if (segment.equals("temp") || segment.equals("pointer")) {
-            return String.format(
-                    "@%s \nD=A \n@%s \nD=D+A \n@SP \nA=M\nM=D\nA=A-1 \nD=M\nA=A+1\nA=M\nM=D \n@SP\nM=M-1 \n",
-                    map.get(segment), index);
+            loadValue = String.format("@%s \nD=A \n@%s \nD=D+A \n", map.get(segment), index);
         } else if (segment.equals("static")) {
-            return String.format("@%s \nD=A \n@SP \nA=M\nM=D\nA=A-1 \nD=M\nA=A+1\nA=M\nM=D \n@SP\nM=M-1 \n",
-                    fileName + "." + index);
+            loadValue = String.format("@%s \nD=A \n", fileName + "." + index);
         } else {
-            return String.format(
-                    "@%s \nD=M \n@%s \nD=D+A\n@SP \nA=M\nM=D\nA=A-1 \nD=M\nA=A+1\nA=M\nM=D \n@SP\nM=M-1 \n",
-                    map.get(segment), index);
+            loadValue = String.format("@%s \nD=M \n@%s \nD=D+A\n", map.get(segment), index);
         }
+        return String.format("%s \n@R14 \nM=D \n@SP \nM=M-1 \nA=M \nD=M \n@R14 \nA=M \n M=D \n", loadValue);
     }
 
     private String _formatPUSH(String segment, Integer index) {

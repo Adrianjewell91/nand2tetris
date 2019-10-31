@@ -34,44 +34,44 @@ M=M+1
 //pop static 8
 @StaticTest.8 
 D=A 
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //pop static 3
 @StaticTest.3 
 D=A 
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //pop static 1
 @StaticTest.1 
 D=A 
-@SP 
-A=M
-M=D
-A=A-1 
-D=M
-A=A+1
-A=M
+ 
+@R14 
 M=D 
-@SP
+@SP 
 M=M-1 
+A=M 
+D=M 
+@R14 
+A=M 
+ M=D 
 
 //push static 3
 @StaticTest.3 

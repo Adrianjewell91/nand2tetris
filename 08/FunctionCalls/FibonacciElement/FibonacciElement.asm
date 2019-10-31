@@ -1,3 +1,59 @@
+@256 
+D=A 
+@SP 
+M=D
+
+@RETURN_ADDRESS0 
+D=A 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@LCL 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@ARG 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THIS 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THAT 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@SP 
+D=M 
+@0 
+D=D-A 
+@5 
+D=D-A
+@ARG 
+M=D 
+@SP 
+D=M 
+@LCL 
+M=D 
+@Sys.init 
+0;JMP 
+(RETURN_ADDRESS0)
+
 //
 //
 //
@@ -21,6 +77,57 @@ M=D
 M=M+1 
 
 //call Main.fibonacci 1
+@RETURN_ADDRESS1 
+D=A 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@LCL 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@ARG 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THIS 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THAT 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@SP 
+D=M 
+@1 
+D=D-A 
+@5 
+D=D-A
+@ARG 
+M=D 
+@SP 
+D=M 
+@LCL 
+M=D 
+@Main.fibonacci 
+0;JMP 
+(RETURN_ADDRESS1)
+
 //label WHILE
 (WHILE)
 
@@ -114,58 +221,58 @@ M=D
 M=M+1 
 
 //return
-//*ARG = pop() // pop the value into the register to which arg points. 
-@SP 
-M=M-1  
-A=M   
-D=M  
-@ARG 
-A=M 
-M=D 
-//    SP = ARG+1
-@ARG 
-D=M+1 
-@SP 
-M=D 
-//    FRAME = LCL
-//    THAT = *(FRAME-1)
+//    FRAME = LCL 
 @LCL 
+D=M
+@R13
+M=D // Stored Frame in R13 
+//    RET = *(FRAME-5) 
+@5 
+A=D-A 
+D=M
+@R14 
+M=D // Store *(Frame-5) in R14 
+//    *ARG = pop()
+@SP
 M=M-1
 A=M
+D=M
+@ARG
+A=M
+M=D
+//    SP = ARG+1
+@ARG
+D=M+1
+@SP
+M=D
+//    THAT = *(FRAME-1)
+@R13 
+AM=M-1 
 D=M 
 @THAT 
-M=D
+M=D 
 //    THIS = *(FRAME-2)
-@LCL 
-M=M-1
-A=M
+@R13 
+AM=M-1 
 D=M 
 @THIS 
-M=D
+M=D 
 //    ARG = *(FRAME-3)
-@LCL 
-M=M-1
-A=M
+@R13 
+AM=M-1 
 D=M 
 @ARG 
 M=D
 //    LCL = *(FRAME-4)
+@R13 
+AM=M-1 
+D=M 
 @LCL 
-D=M-1 
-@SP 
-A=M
-M=D 
-A=D 
-D=M
-@LCL
 M=D
-//    RET = *(FRAME-5)
-@SP
-A=M
-A=M-1 
+//    goto RET
+@R14 
 A=M
 0;JMP
-//    goto RET
 
 //label IF_FALSE
 (IF_FALSE)
@@ -203,6 +310,57 @@ D=A+1
 M=D 
 
 //call Main.fibonacci 1
+@RETURN_ADDRESS2 
+D=A 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@LCL 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@ARG 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THIS 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THAT 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@SP 
+D=M 
+@1 
+D=D-A 
+@5 
+D=D-A
+@ARG 
+M=D 
+@SP 
+D=M 
+@LCL 
+M=D 
+@Main.fibonacci 
+0;JMP 
+(RETURN_ADDRESS2)
+
 //push argument 0
 @ARG 
 D=M 
@@ -236,6 +394,57 @@ D=A+1
 M=D 
 
 //call Main.fibonacci 1
+@RETURN_ADDRESS3 
+D=A 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@LCL 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@ARG 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THIS 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@THAT 
+D=M 
+@SP 
+A=M 
+M=D 
+@SP 
+M=M+1 
+@SP 
+D=M 
+@1 
+D=D-A 
+@5 
+D=D-A
+@ARG 
+M=D 
+@SP 
+D=M 
+@LCL 
+M=D 
+@Main.fibonacci 
+0;JMP 
+(RETURN_ADDRESS3)
+
 //add
 @SP 
 A=M-1 
@@ -248,56 +457,56 @@ D=A+1
 M=D 
 
 //return
-//*ARG = pop() // pop the value into the register to which arg points. 
-@SP 
-M=M-1  
-A=M   
-D=M  
-@ARG 
-A=M 
-M=D 
-//    SP = ARG+1
-@ARG 
-D=M+1 
-@SP 
-M=D 
-//    FRAME = LCL
-//    THAT = *(FRAME-1)
+//    FRAME = LCL 
 @LCL 
+D=M
+@R13
+M=D // Stored Frame in R13 
+//    RET = *(FRAME-5) 
+@5 
+A=D-A 
+D=M
+@R14 
+M=D // Store *(Frame-5) in R14 
+//    *ARG = pop()
+@SP
 M=M-1
 A=M
+D=M
+@ARG
+A=M
+M=D
+//    SP = ARG+1
+@ARG
+D=M+1
+@SP
+M=D
+//    THAT = *(FRAME-1)
+@R13 
+AM=M-1 
 D=M 
 @THAT 
-M=D
+M=D 
 //    THIS = *(FRAME-2)
-@LCL 
-M=M-1
-A=M
+@R13 
+AM=M-1 
 D=M 
 @THIS 
-M=D
+M=D 
 //    ARG = *(FRAME-3)
-@LCL 
-M=M-1
-A=M
+@R13 
+AM=M-1 
 D=M 
 @ARG 
 M=D
 //    LCL = *(FRAME-4)
+@R13 
+AM=M-1 
+D=M 
 @LCL 
-D=M-1 
-@SP 
-A=M
-M=D 
-A=D 
-D=M
-@LCL
 M=D
-//    RET = *(FRAME-5)
-@SP
-A=M
-A=M-1 
+//    goto RET
+@R14 
 A=M
 0;JMP
-//    goto RET
 

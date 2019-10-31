@@ -10,53 +10,60 @@ class Translator {
         String[] files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/08/ProgramFlow/BasicLoop/BasicLoop.vm"};
         String output = "/Users/adrianjewell/Desktop/nand2tetris/projects/08/ProgramFlow/BasicLoop/BasicLoop.asm";
         String[] name = new String [] {"BasicLoop" } ;
-        compile(files, output, name);
+        compile(files, output, name, false);
         
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/FibonacciElement/Sys.vm", 
                               "/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/FibonacciElement/Main.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/FibonacciElement/FibonacciElement.asm";;
         name = new String[] {"Sys", "Main"};
-        compile(files, output, name);
+        compile(files, output, name, true);
+
+        files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/StaticsTest/Sys.vm", 
+                              "/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/StaticsTest/Class1.vm",
+                              "/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/StaticsTest/Class2.vm"};
+        output = "/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/StaticsTest/StaticsTest.asm";;
+        name = new String[] {"Sys", "Class1", "Class2"};
+        compile(files, output, name, true);
         
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/08/ProgramFlow/FibonacciSeries/FibonacciSeries.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/08/ProgramFlow/FibonacciSeries/FibonacciSeries.asm";
         name = new String[] {"FibonacciSeries"};
-        compile(files, output, name);
+        compile(files, output, name, false);
         
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/SimpleFunction/SimpleFunction.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/08/FunctionCalls/SimpleFunction/SimpleFunction.asm";
         name = new String[] {"SimpleFunction"};
-        compile(files, output, name);
+        compile(files, output, name, false);
 
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/SimpleAdd/SimpleAdd.asm";
         name = new String[] {"SimpleAdd"};
-        compile(files, output, name);
+        compile(files, output, name, false);
         
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.asm";
         name = new String[] {"StackTest"};
-        compile(files, output, name);
+        compile(files, output, name, false);
 
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/BasicTest/BasicTest.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/BasicTest/BasicTest.asm";
         name = new String[] {"BasicTest"};
-        compile(files, output, name);
+        compile(files, output, name, false);
         
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.asm";
         name = new String[] {"PointerTest"};
-        compile(files, output, name);
+        compile(files, output, name, false);
 
         files = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/StaticTest/StaticTest.vm"};
         output = "/Users/adrianjewell/Desktop/nand2tetris/projects/07/MemoryAccess/StaticTest/StaticTest.asm";
         name = new String[] {"StaticTest"};
-        compile(files, output, name);
+        compile(files, output, name, false);
     }
 
-    // Refactor into this then test:
-    public static void compile(String[] files, String output, String[] names) throws IOException {
+    public static void compile(String[] files, String output, String[] names, Boolean shouldBootstrap) throws IOException {
         writer = new CodeWriter(output, names[0]);
+        if (shouldBootstrap) writer.writeBootstrapCode();
         for (int i = 0; i < files.length; i++) {
            writer.setFileName(names[i]);
            parser = new Parser(files[i]);
@@ -94,6 +101,9 @@ class Translator {
                     break;
                     case "C_RETURN":
                     writer.writeReturn();
+                    break;
+                    case "C_CALL":
+                    writer.writeCall(parser.arg1(), parser.arg2());
                     break;
                 default:
                     break;
