@@ -39,8 +39,3 @@ class JackAnalyzer {
         }
     }
 }
-
-// Tonight: buy food this afternoon, no, I have to start staying on a work schedule.
-    // - Recipe for the energy bars, grains, pb, and i have plenty of honey I think. 
-    // Bread, hummus, cheese, olives, eggs, vegetable, fruits, nuts, meat, yogurt. 
-    // Another crockpot recipe? Use the rest of the cream. 
