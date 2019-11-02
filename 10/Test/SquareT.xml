@@ -1,8 +1,4 @@
-c
-l
-a
-s
-s
+class
  
 S
 q
@@ -12,47 +8,25 @@ r
 e
  
 {
-f
-i
-e
-l
-d
+field
  
-i
-n
-t
+int
  
 x
 ,
  
 y
 ;
-f
-i
-e
-l
-d
+field
  
-i
-n
-t
+int
  
 s
 i
 z
 e
 ;
-c
-o
-n
-s
-t
-r
-u
-c
-t
-o
-r
+constructor
  
 S
 q
@@ -65,25 +39,19 @@ n
 e
 w
 (
-i
-n
-t
+int
  
 A
 x
 ,
  
-i
-n
-t
+int
  
 A
 y
 ,
  
-i
-n
-t
+int
  
 A
 s
@@ -93,9 +61,7 @@ e
 )
  
 {
-l
-e
-t
+let
  
 x
  
@@ -104,9 +70,7 @@ x
 A
 x
 ;
-l
-e
-t
+let
  
 y
  
@@ -115,9 +79,7 @@ y
 A
 y
 ;
-l
-e
-t
+let
  
 s
 i
@@ -132,8 +94,7 @@ i
 z
 e
 ;
-d
-o
+do
  
 d
 r
@@ -142,30 +103,14 @@ w
 (
 )
 ;
-r
-e
-t
-u
-r
-n
+return
  
-t
-h
-i
-s
+this
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 d
 i
@@ -178,8 +123,7 @@ e
 )
  
 {
-d
-o
+do
  
 M
 e
@@ -196,31 +140,15 @@ l
 o
 c
 (
-t
-h
-i
-s
+this
 )
 ;
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 d
 r
@@ -230,8 +158,7 @@ w
 )
  
 {
-d
-o
+do
  
 S
 c
@@ -249,14 +176,10 @@ l
 o
 r
 (
-t
-r
-u
-e
+true
 )
 ;
-d
-o
+do
  
 S
 c
@@ -305,25 +228,12 @@ z
 e
 )
 ;
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 e
 r
@@ -334,8 +244,7 @@ e
 )
  
 {
-d
-o
+do
  
 S
 c
@@ -353,15 +262,10 @@ l
 o
 r
 (
-f
-a
-l
-s
-e
+false
 )
 ;
-d
-o
+do
  
 S
 c
@@ -410,25 +314,12 @@ z
 e
 )
 ;
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 i
 n
@@ -441,8 +332,7 @@ e
 )
  
 {
-i
-f
+if
  
 (
 (
@@ -459,9 +349,7 @@ e
  
 <
  
-2
-5
-4
+254
 )
  
 &
@@ -480,15 +368,12 @@ e
  
 <
  
-5
-1
-0
+510
 )
 )
  
 {
-d
-o
+do
  
 e
 r
@@ -498,9 +383,7 @@ e
 (
 )
 ;
-l
-e
-t
+let
  
 s
 i
@@ -518,8 +401,7 @@ e
  
 2
 ;
-d
-o
+do
  
 d
 r
@@ -529,25 +411,12 @@ w
 )
 ;
 }
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 d
 e
@@ -560,8 +429,7 @@ e
 )
  
 {
-i
-f
+if
  
 (
 s
@@ -575,8 +443,7 @@ e
 )
  
 {
-d
-o
+do
  
 e
 r
@@ -586,9 +453,7 @@ e
 (
 )
 ;
-l
-e
-t
+let
  
 s
 i
@@ -606,8 +471,7 @@ e
  
 2
 ;
-d
-o
+do
  
 d
 r
@@ -617,25 +481,12 @@ w
 )
 ;
 }
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 m
 o
@@ -647,8 +498,7 @@ p
 )
  
 {
-i
-f
+if
  
 (
 y
@@ -659,8 +509,7 @@ y
 )
  
 {
-d
-o
+do
  
 S
 c
@@ -678,15 +527,10 @@ l
 o
 r
 (
-f
-a
-l
-s
-e
+false
 )
 ;
-d
-o
+do
  
 S
 c
@@ -748,9 +592,7 @@ z
 e
 )
 ;
-l
-e
-t
+let
  
 y
  
@@ -762,8 +604,7 @@ y
  
 2
 ;
-d
-o
+do
  
 S
 c
@@ -781,14 +622,10 @@ l
 o
 r
 (
-t
-r
-u
-e
+true
 )
 ;
-d
-o
+do
  
 S
 c
@@ -835,25 +672,12 @@ y
 )
 ;
 }
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 m
 o
@@ -867,8 +691,7 @@ n
 )
  
 {
-i
-f
+if
  
 (
 (
@@ -884,14 +707,11 @@ e
  
 <
  
-2
-5
-4
+254
 )
  
 {
-d
-o
+do
  
 S
 c
@@ -909,15 +729,10 @@ l
 o
 r
 (
-f
-a
-l
-s
-e
+false
 )
 ;
-d
-o
+do
  
 S
 c
@@ -963,9 +778,7 @@ y
 1
 )
 ;
-l
-e
-t
+let
  
 y
  
@@ -977,8 +790,7 @@ y
  
 2
 ;
-d
-o
+do
  
 S
 c
@@ -996,14 +808,10 @@ l
 o
 r
 (
-t
-r
-u
-e
+true
 )
 ;
-d
-o
+do
  
 S
 c
@@ -1066,25 +874,12 @@ e
 )
 ;
 }
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 m
 o
@@ -1098,8 +893,7 @@ t
 )
  
 {
-i
-f
+if
  
 (
 x
@@ -1110,8 +904,7 @@ x
 )
  
 {
-d
-o
+do
  
 S
 c
@@ -1129,15 +922,10 @@ l
 o
 r
 (
-f
-a
-l
-s
-e
+false
 )
 ;
-d
-o
+do
  
 S
 c
@@ -1199,9 +987,7 @@ z
 e
 )
 ;
-l
-e
-t
+let
  
 x
  
@@ -1213,8 +999,7 @@ x
  
 2
 ;
-d
-o
+do
  
 S
 c
@@ -1232,14 +1017,10 @@ l
 o
 r
 (
-t
-r
-u
-e
+true
 )
 ;
-d
-o
+do
  
 S
 c
@@ -1286,25 +1067,12 @@ e
 )
 ;
 }
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-m
-e
-t
-h
-o
-d
+method
  
-v
-o
-i
-d
+void
  
 m
 o
@@ -1319,8 +1087,7 @@ t
 )
  
 {
-i
-f
+if
  
 (
 (
@@ -1336,14 +1103,11 @@ e
  
 <
  
-5
-1
-0
+510
 )
  
 {
-d
-o
+do
  
 S
 c
@@ -1361,15 +1125,10 @@ l
 o
 r
 (
-f
-a
-l
-s
-e
+false
 )
 ;
-d
-o
+do
  
 S
 c
@@ -1415,9 +1174,7 @@ z
 e
 )
 ;
-l
-e
-t
+let
  
 x
  
@@ -1429,8 +1186,7 @@ x
  
 2
 ;
-d
-o
+do
  
 S
 c
@@ -1448,14 +1204,10 @@ l
 o
 r
 (
-t
-r
-u
-e
+true
 )
 ;
-d
-o
+do
  
 S
 c
@@ -1518,12 +1270,7 @@ e
 )
 ;
 }
-r
-e
-t
-u
-r
-n
+return
 ;
 }
 }

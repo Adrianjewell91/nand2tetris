@@ -1,8 +1,4 @@
-c
-l
-a
-s
-s
+class
  
 M
 a
@@ -10,39 +6,18 @@ i
 n
  
 {
-s
-t
-a
-t
-i
-c
+static
  
-b
-o
-o
-l
-e
-a
-n
+boolean
  
 t
 e
 s
 t
 ;
-f
-u
-n
-c
-t
-i
-o
-n
+function
  
-v
-o
-i
-d
+void
  
 m
 a
@@ -52,9 +27,7 @@ n
 )
  
 {
-v
-a
-r
+var
  
 S
 q
@@ -72,9 +45,7 @@ a
 m
 e
 ;
-l
-e
-t
+let
  
 g
 a
@@ -100,8 +71,7 @@ w
 (
 )
 ;
-d
-o
+do
  
 g
 a
@@ -114,8 +84,7 @@ n
 (
 )
 ;
-d
-o
+do
  
 g
 a
@@ -132,27 +101,12 @@ e
 (
 )
 ;
-r
-e
-t
-u
-r
-n
+return
 ;
 }
-f
-u
-n
-c
-t
-i
-o
-n
+function
  
-v
-o
-i
-d
+void
  
 t
 e
@@ -162,22 +116,16 @@ t
 )
  
 {
-v
-a
-r
+var
  
-i
-n
-t
+int
  
 i
 ,
  
 j
 ;
-v
-a
-r
+var
  
 S
 t
@@ -188,9 +136,7 @@ g
  
 s
 ;
-v
-a
-r
+var
  
 A
 r
@@ -200,21 +146,14 @@ y
  
 a
 ;
-i
-f
+if
  
 (
-f
-a
-l
-s
-e
+false
 )
  
 {
-l
-e
-t
+let
  
 s
  
@@ -238,22 +177,15 @@ n
 t
 "
 ;
-l
-e
-t
+let
  
 s
  
 =
  
-n
-u
-l
-l
+null
 ;
-l
-e
-t
+let
  
 a
 [
@@ -268,15 +200,10 @@ a
 ]
 ;
 }
-e
-l
-s
-e
+else
  
 {
-l
-e
-t
+let
  
 i
  
@@ -291,9 +218,7 @@ i
 j
 )
 ;
-l
-e
-t
+let
  
 j
  
@@ -308,9 +233,7 @@ j
 2
 )
 ;
-l
-e
-t
+let
  
 i
  
@@ -323,12 +246,7 @@ i
 j
 ;
 }
-r
-e
-t
-u
-r
-n
+return
 ;
 }
 }

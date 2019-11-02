@@ -1,8 +1,4 @@
-c
-l
-a
-s
-s
+class
  
 M
 a
@@ -10,19 +6,9 @@ i
 n
  
 {
-f
-u
-n
-c
-t
-i
-o
-n
+function
  
-v
-o
-i
-d
+void
  
 m
 a
@@ -32,9 +18,7 @@ n
 )
  
 {
-v
-a
-r
+var
  
 A
 r
@@ -44,13 +28,9 @@ y
  
 a
 ;
-v
-a
-r
+var
  
-i
-n
-t
+int
  
 l
 e
@@ -59,13 +39,9 @@ g
 t
 h
 ;
-v
-a
-r
+var
  
-i
-n
-t
+int
  
 i
 ,
@@ -74,9 +50,7 @@ s
 u
 m
 ;
-l
-e
-t
+let
  
 l
 e
@@ -126,9 +100,7 @@ S
 "
 )
 ;
-l
-e
-t
+let
  
 a
  
@@ -152,9 +124,7 @@ t
 h
 )
 ;
-l
-e
-t
+let
  
 i
  
@@ -162,11 +132,7 @@ i
  
 0
 ;
-w
-h
-i
-l
-e
+while
  
 (
 i
@@ -182,9 +148,7 @@ h
 )
  
 {
-l
-e
-t
+let
  
 a
 [
@@ -237,9 +201,7 @@ R
 "
 )
 ;
-l
-e
-t
+let
  
 i
  
@@ -252,9 +214,7 @@ i
 1
 ;
 }
-l
-e
-t
+let
  
 i
  
@@ -262,9 +222,7 @@ i
  
 0
 ;
-l
-e
-t
+let
  
 s
 u
@@ -274,11 +232,7 @@ m
  
 0
 ;
-w
-h
-i
-l
-e
+while
  
 (
 i
@@ -294,9 +248,7 @@ h
 )
  
 {
-l
-e
-t
+let
  
 s
 u
@@ -315,9 +267,7 @@ a
 i
 ]
 ;
-l
-e
-t
+let
  
 i
  
@@ -330,8 +280,7 @@ i
 1
 ;
 }
-d
-o
+do
  
 O
 u
@@ -342,9 +291,7 @@ t
 .
 p
 r
-i
-n
-t
+int
 S
 t
 r
@@ -372,8 +319,7 @@ S
 "
 )
 ;
-d
-o
+do
  
 O
 u
@@ -384,9 +330,7 @@ t
 .
 p
 r
-i
-n
-t
+int
 I
 n
 t
@@ -405,8 +349,7 @@ t
 h
 )
 ;
-d
-o
+do
  
 O
 u
@@ -417,20 +360,13 @@ t
 .
 p
 r
-i
-n
-t
+int
 l
 n
 (
 )
 ;
-r
-e
-t
-u
-r
-n
+return
 ;
 }
 }
