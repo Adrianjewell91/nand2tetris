@@ -1,372 +1,142 @@
-class
- 
-M
-a
-i
-n
- 
-{
-function
- 
-void
- 
-m
-a
-i
-n
-(
-)
- 
-{
-var
- 
-A
-r
-r
-a
-y
- 
-a
-;
-var
- 
-int
- 
-l
-e
-n
-g
-t
-h
-;
-var
- 
-int
- 
-i
-,
- 
-s
-u
-m
-;
-let
- 
-l
-e
-n
-g
-t
-h
- 
-=
- 
-K
-e
-y
-b
-o
-a
-r
-d
-.
-r
-e
-a
-d
-I
-n
-t
-(
-"
-H
-O
-W
- 
-M
-A
-N
-Y
- 
-N
-U
-M
-B
-E
-R
-S
-?
- 
-"
-)
-;
-let
- 
-a
- 
-=
- 
-A
-r
-r
-a
-y
-.
-n
-e
-w
-(
-l
-e
-n
-g
-t
-h
-)
-;
-let
- 
-i
- 
-=
- 
-0
-;
-while
- 
-(
-i
- 
-<
- 
-l
-e
-n
-g
-t
-h
-)
- 
-{
-let
- 
-a
-[
-i
-]
- 
-=
- 
-K
-e
-y
-b
-o
-a
-r
-d
-.
-r
-e
-a
-d
-I
-n
-t
-(
-"
-E
-N
-T
-E
-R
- 
-T
-H
-E
- 
-N
-E
-X
-T
- 
-N
-U
-M
-B
-E
-R
-:
- 
-"
-)
-;
-let
- 
-i
- 
-=
- 
-i
- 
-+
- 
-1
-;
-}
-let
- 
-i
- 
-=
- 
-0
-;
-let
- 
-s
-u
-m
- 
-=
- 
-0
-;
-while
- 
-(
-i
- 
-<
- 
-l
-e
-n
-g
-t
-h
-)
- 
-{
-let
- 
-s
-u
-m
- 
-=
- 
-s
-u
-m
- 
-+
- 
-a
-[
-i
-]
-;
-let
- 
-i
- 
-=
- 
-i
- 
-+
- 
-1
-;
-}
-do
- 
-O
-u
-t
-p
-u
-t
-.
-p
-r
-int
-S
-t
-r
-i
-n
-g
-(
-"
-T
-H
-E
- 
-A
-V
-E
-R
-A
-G
-E
- 
-I
-S
-:
- 
-"
-)
-;
-do
- 
-O
-u
-t
-p
-u
-t
-.
-p
-r
-int
-I
-n
-t
-(
-s
-u
-m
- 
-/
- 
-l
-e
-n
-g
-t
-h
-)
-;
-do
- 
-O
-u
-t
-p
-u
-t
-.
-p
-r
-int
-l
-n
-(
-)
-;
-return
-;
-}
-}
+<tokens>
+<keyword> class </keyword>
+<identifier> Main </identifier>
+<symbol> { </symbol>
+<keyword> function </keyword>
+<keyword> void </keyword>
+<identifier> main </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> var </keyword>
+<identifier> Array </identifier>
+<identifier> a </identifier>
+<symbol> ; </symbol>
+<keyword> var </keyword>
+<keyword> int </keyword>
+<identifier> length </identifier>
+<symbol> ; </symbol>
+<keyword> var </keyword>
+<keyword> int </keyword>
+<identifier> i </identifier>
+<symbol> , </symbol>
+<identifier> sum </identifier>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> length </identifier>
+<symbol> = </symbol>
+<identifier> Keyboard </identifier>
+<symbol> . </symbol>
+<identifier> readInt </identifier>
+<symbol> ( </symbol>
+<stringConstant> HOW MANY NUMBERS?  </stringConstant>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> a </identifier>
+<symbol> = </symbol>
+<identifier> Array </identifier>
+<symbol> . </symbol>
+<identifier> new </identifier>
+<symbol> ( </symbol>
+<identifier> length </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> i </identifier>
+<symbol> = </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> ; </symbol>
+<keyword> while </keyword>
+<symbol> ( </symbol>
+<identifier> i </identifier>
+<symbol> &lt; </symbol>
+<identifier> length </identifier>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> a </identifier>
+<symbol> [ </symbol>
+<identifier> i </identifier>
+<symbol> ] </symbol>
+<symbol> = </symbol>
+<identifier> Keyboard </identifier>
+<symbol> . </symbol>
+<identifier> readInt </identifier>
+<symbol> ( </symbol>
+<stringConstant> ENTER THE NEXT NUMBER:  </stringConstant>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> i </identifier>
+<symbol> = </symbol>
+<identifier> i </identifier>
+<symbol> + </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> let </keyword>
+<identifier> i </identifier>
+<symbol> = </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> sum </identifier>
+<symbol> = </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> ; </symbol>
+<keyword> while </keyword>
+<symbol> ( </symbol>
+<identifier> i </identifier>
+<symbol> &lt; </symbol>
+<identifier> length </identifier>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> sum </identifier>
+<symbol> = </symbol>
+<identifier> sum </identifier>
+<symbol> + </symbol>
+<identifier> a </identifier>
+<symbol> [ </symbol>
+<identifier> i </identifier>
+<symbol> ] </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> i </identifier>
+<symbol> = </symbol>
+<identifier> i </identifier>
+<symbol> + </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> do </keyword>
+<identifier> Output </identifier>
+<symbol> . </symbol>
+<identifier> printString </identifier>
+<symbol> ( </symbol>
+<stringConstant> THE AVERAGE IS:  </stringConstant>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Output </identifier>
+<symbol> . </symbol>
+<identifier> printInt </identifier>
+<symbol> ( </symbol>
+<identifier> sum </identifier>
+<symbol> / </symbol>
+<identifier> length </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Output </identifier>
+<symbol> . </symbol>
+<identifier> println </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<symbol> } </symbol>
+</tokens>

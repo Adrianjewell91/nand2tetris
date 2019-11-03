@@ -1,779 +1,315 @@
-class
- 
-S
-q
-u
-a
-r
-e
-G
-a
-m
-e
- 
-{
-field
- 
-S
-q
-u
-a
-r
-e
- 
-s
-q
-u
-a
-r
-e
-;
-field
- 
-int
- 
-d
-i
-r
-e
-c
-t
-i
-o
-n
-;
-constructor
- 
-S
-q
-u
-a
-r
-e
-G
-a
-m
-e
- 
-n
-e
-w
-(
-)
- 
-{
-let
- 
-s
-q
-u
-a
-r
-e
- 
-=
- 
-S
-q
-u
-a
-r
-e
-.
-n
-e
-w
-(
-0
-,
- 
-0
-,
- 
-30
-)
-;
-let
- 
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-0
-;
-return
- 
-this
-;
-}
-method
- 
-void
- 
-d
-i
-s
-p
-o
-s
-e
-(
-)
- 
-{
-do
- 
-s
-q
-u
-a
-r
-e
-.
-d
-i
-s
-p
-o
-s
-e
-(
-)
-;
-do
- 
-M
-e
-m
-o
-r
-y
-.
-d
-e
-A
-l
-l
-o
-c
-(
-this
-)
-;
-return
-;
-}
-method
- 
-void
- 
-m
-o
-v
-e
-S
-q
-u
-a
-r
-e
-(
-)
- 
-{
-if
- 
-(
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-1
-)
- 
-{
- 
-do
- 
-s
-q
-u
-a
-r
-e
-.
-m
-o
-v
-e
-U
-p
-(
-)
-;
- 
-}
-if
- 
-(
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-2
-)
- 
-{
- 
-do
- 
-s
-q
-u
-a
-r
-e
-.
-m
-o
-v
-e
-D
-o
-w
-n
-(
-)
-;
- 
-}
-if
- 
-(
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-3
-)
- 
-{
- 
-do
- 
-s
-q
-u
-a
-r
-e
-.
-m
-o
-v
-e
-L
-e
-f
-t
-(
-)
-;
- 
-}
-if
- 
-(
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-4
-)
- 
-{
- 
-do
- 
-s
-q
-u
-a
-r
-e
-.
-m
-o
-v
-e
-R
-i
-g
-h
-t
-(
-)
-;
- 
-}
-do
- 
-S
-y
-s
-.
-w
-a
-i
-t
-(
-5
-)
-;
-return
-;
-}
-method
- 
-void
- 
-r
-u
-n
-(
-)
- 
-{
-var
- 
-char
- 
-k
-e
-y
-;
-var
- 
-boolean
- 
-e
-x
-i
-t
-;
-let
- 
-e
-x
-i
-t
- 
-=
- 
-false
-;
-while
- 
-(
-~
-e
-x
-i
-t
-)
- 
-{
-while
- 
-(
-k
-e
-y
- 
-=
- 
-0
-)
- 
-{
-let
- 
-k
-e
-y
- 
-=
- 
-K
-e
-y
-b
-o
-a
-r
-d
-.
-k
-e
-y
-P
-r
-e
-s
-s
-e
-d
-(
-)
-;
-do
- 
-m
-o
-v
-e
-S
-q
-u
-a
-r
-e
-(
-)
-;
-}
-if
- 
-(
-k
-e
-y
- 
-=
- 
-81
-)
- 
- 
-{
- 
-let
- 
-e
-x
-i
-t
- 
-=
- 
-true
-;
- 
-}
-if
- 
-(
-k
-e
-y
- 
-=
- 
-90
-)
- 
- 
-{
- 
-do
- 
-s
-q
-u
-a
-r
-e
-.
-d
-e
-c
-S
-i
-z
-e
-(
-)
-;
- 
-}
-if
- 
-(
-k
-e
-y
- 
-=
- 
-88
-)
- 
- 
-{
- 
-do
- 
-s
-q
-u
-a
-r
-e
-.
-i
-n
-c
-S
-i
-z
-e
-(
-)
-;
- 
-}
-if
- 
-(
-k
-e
-y
- 
-=
- 
-131
-)
- 
-{
- 
-let
- 
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-1
-;
- 
-}
-if
- 
-(
-k
-e
-y
- 
-=
- 
-133
-)
- 
-{
- 
-let
- 
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-2
-;
- 
-}
-if
- 
-(
-k
-e
-y
- 
-=
- 
-130
-)
- 
-{
- 
-let
- 
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-3
-;
- 
-}
-if
- 
-(
-k
-e
-y
- 
-=
- 
-132
-)
- 
-{
- 
-let
- 
-d
-i
-r
-e
-c
-t
-i
-o
-n
- 
-=
- 
-4
-;
- 
-}
-while
- 
-(
-~
-(
-k
-e
-y
- 
-=
- 
-0
-)
-)
- 
-{
-let
- 
-k
-e
-y
- 
-=
- 
-K
-e
-y
-b
-o
-a
-r
-d
-.
-k
-e
-y
-P
-r
-e
-s
-s
-e
-d
-(
-)
-;
-do
- 
-m
-o
-v
-e
-S
-q
-u
-a
-r
-e
-(
-)
-;
-}
-}
-return
-;
-}
-}
+<tokens>
+<keyword> class </keyword>
+<identifier> SquareGame </identifier>
+<symbol> { </symbol>
+<keyword> field </keyword>
+<identifier> Square </identifier>
+<identifier> square </identifier>
+<symbol> ; </symbol>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier> direction </identifier>
+<symbol> ; </symbol>
+<keyword> constructor </keyword>
+<identifier> SquareGame </identifier>
+<identifier> new </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> square </identifier>
+<symbol> = </symbol>
+<identifier> Square </identifier>
+<symbol> . </symbol>
+<identifier> new </identifier>
+<symbol> ( </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> , </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> , </symbol>
+<integerConstant> 30 </integerConstant>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<keyword> this </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> dispose </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> square </identifier>
+<symbol> . </symbol>
+<identifier> dispose </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Memory </identifier>
+<symbol> . </symbol>
+<identifier> deAlloc </identifier>
+<symbol> ( </symbol>
+<keyword> this </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> moveSquare </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> square </identifier>
+<symbol> . </symbol>
+<identifier> moveUp </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> square </identifier>
+<symbol> . </symbol>
+<identifier> moveDown </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 3 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> square </identifier>
+<symbol> . </symbol>
+<identifier> moveLeft </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 4 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> square </identifier>
+<symbol> . </symbol>
+<identifier> moveRight </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> do </keyword>
+<identifier> Sys </identifier>
+<symbol> . </symbol>
+<identifier> wait </identifier>
+<symbol> ( </symbol>
+<integerConstant> 5 </integerConstant>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> run </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> var </keyword>
+<keyword> char </keyword>
+<identifier> key </identifier>
+<symbol> ; </symbol>
+<keyword> var </keyword>
+<keyword> boolean </keyword>
+<identifier> exit </identifier>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> exit </identifier>
+<symbol> = </symbol>
+<keyword> false </keyword>
+<symbol> ; </symbol>
+<keyword> while </keyword>
+<symbol> ( </symbol>
+<symbol> ~ </symbol>
+<identifier> exit </identifier>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> while </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<identifier> Keyboard </identifier>
+<symbol> . </symbol>
+<identifier> keyPressed </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> moveSquare </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 81 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> exit </identifier>
+<symbol> = </symbol>
+<keyword> true </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 90 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> square </identifier>
+<symbol> . </symbol>
+<identifier> decSize </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 88 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> square </identifier>
+<symbol> . </symbol>
+<identifier> incSize </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 131 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 133 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 130 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 3 </integerConstant>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 132 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> direction </identifier>
+<symbol> = </symbol>
+<integerConstant> 4 </integerConstant>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> while </keyword>
+<symbol> ( </symbol>
+<symbol> ~ </symbol>
+<symbol> ( </symbol>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<integerConstant> 0 </integerConstant>
+<symbol> ) </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> key </identifier>
+<symbol> = </symbol>
+<identifier> Keyboard </identifier>
+<symbol> . </symbol>
+<identifier> keyPressed </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> moveSquare </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<symbol> } </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<symbol> } </symbol>
+</tokens>

@@ -1,1276 +1,561 @@
-class
- 
-S
-q
-u
-a
-r
-e
- 
-{
-field
- 
-int
- 
-x
-,
- 
-y
-;
-field
- 
-int
- 
-s
-i
-z
-e
-;
-constructor
- 
-S
-q
-u
-a
-r
-e
- 
-n
-e
-w
-(
-int
- 
-A
-x
-,
- 
-int
- 
-A
-y
-,
- 
-int
- 
-A
-s
-i
-z
-e
-)
- 
-{
-let
- 
-x
- 
-=
- 
-A
-x
-;
-let
- 
-y
- 
-=
- 
-A
-y
-;
-let
- 
-s
-i
-z
-e
- 
-=
- 
-A
-s
-i
-z
-e
-;
-do
- 
-d
-r
-a
-w
-(
-)
-;
-return
- 
-this
-;
-}
-method
- 
-void
- 
-d
-i
-s
-p
-o
-s
-e
-(
-)
- 
-{
-do
- 
-M
-e
-m
-o
-r
-y
-.
-d
-e
-A
-l
-l
-o
-c
-(
-this
-)
-;
-return
-;
-}
-method
- 
-void
- 
-d
-r
-a
-w
-(
-)
- 
-{
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-true
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-y
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-return
-;
-}
-method
- 
-void
- 
-e
-r
-a
-s
-e
-(
-)
- 
-{
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-false
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-y
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-return
-;
-}
-method
- 
-void
- 
-i
-n
-c
-S
-i
-z
-e
-(
-)
- 
-{
-if
- 
-(
-(
-(
-y
- 
-+
- 
-s
-i
-z
-e
-)
- 
-<
- 
-254
-)
- 
-&
- 
-(
-(
-x
- 
-+
- 
-s
-i
-z
-e
-)
- 
-<
- 
-510
-)
-)
- 
-{
-do
- 
-e
-r
-a
-s
-e
-(
-)
-;
-let
- 
-s
-i
-z
-e
- 
-=
- 
-s
-i
-z
-e
- 
-+
- 
-2
-;
-do
- 
-d
-r
-a
-w
-(
-)
-;
-}
-return
-;
-}
-method
- 
-void
- 
-d
-e
-c
-S
-i
-z
-e
-(
-)
- 
-{
-if
- 
-(
-s
-i
-z
-e
- 
->
- 
-2
-)
- 
-{
-do
- 
-e
-r
-a
-s
-e
-(
-)
-;
-let
- 
-s
-i
-z
-e
- 
-=
- 
-s
-i
-z
-e
- 
--
- 
-2
-;
-do
- 
-d
-r
-a
-w
-(
-)
-;
-}
-return
-;
-}
-method
- 
-void
- 
-m
-o
-v
-e
-U
-p
-(
-)
- 
-{
-if
- 
-(
-y
- 
->
- 
-1
-)
- 
-{
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-false
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-(
-y
- 
-+
- 
-s
-i
-z
-e
-)
- 
--
- 
-1
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-let
- 
-y
- 
-=
- 
-y
- 
--
- 
-2
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-true
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-y
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-1
-)
-;
-}
-return
-;
-}
-method
- 
-void
- 
-m
-o
-v
-e
-D
-o
-w
-n
-(
-)
- 
-{
-if
- 
-(
-(
-y
- 
-+
- 
-s
-i
-z
-e
-)
- 
-<
- 
-254
-)
- 
-{
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-false
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-y
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-1
-)
-;
-let
- 
-y
- 
-=
- 
-y
- 
-+
- 
-2
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-true
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-(
-y
- 
-+
- 
-s
-i
-z
-e
-)
- 
--
- 
-1
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-}
-return
-;
-}
-method
- 
-void
- 
-m
-o
-v
-e
-L
-e
-f
-t
-(
-)
- 
-{
-if
- 
-(
-x
- 
->
- 
-1
-)
- 
-{
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-false
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-(
-x
- 
-+
- 
-s
-i
-z
-e
-)
- 
--
- 
-1
-,
- 
-y
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-let
- 
-x
- 
-=
- 
-x
- 
--
- 
-2
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-true
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-y
-,
- 
-x
- 
-+
- 
-1
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-}
-return
-;
-}
-method
- 
-void
- 
-m
-o
-v
-e
-R
-i
-g
-h
-t
-(
-)
- 
-{
-if
- 
-(
-(
-x
- 
-+
- 
-s
-i
-z
-e
-)
- 
-<
- 
-510
-)
- 
-{
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-false
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-x
-,
- 
-y
-,
- 
-x
- 
-+
- 
-1
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-let
- 
-x
- 
-=
- 
-x
- 
-+
- 
-2
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-s
-e
-t
-C
-o
-l
-o
-r
-(
-true
-)
-;
-do
- 
-S
-c
-r
-e
-e
-n
-.
-d
-r
-a
-w
-R
-e
-c
-t
-a
-n
-g
-l
-e
-(
-(
-x
- 
-+
- 
-s
-i
-z
-e
-)
- 
--
- 
-1
-,
- 
-y
-,
- 
-x
- 
-+
- 
-s
-i
-z
-e
-,
- 
-y
- 
-+
- 
-s
-i
-z
-e
-)
-;
-}
-return
-;
-}
-}
+<tokens>
+<keyword> class </keyword>
+<identifier> Square </identifier>
+<symbol> { </symbol>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> ; </symbol>
+<keyword> field </keyword>
+<keyword> int </keyword>
+<identifier> size </identifier>
+<symbol> ; </symbol>
+<keyword> constructor </keyword>
+<identifier> Square </identifier>
+<identifier> new </identifier>
+<symbol> ( </symbol>
+<keyword> int </keyword>
+<identifier> Ax </identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> Ay </identifier>
+<symbol> , </symbol>
+<keyword> int </keyword>
+<identifier> Asize </identifier>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> let </keyword>
+<identifier> x </identifier>
+<symbol> = </symbol>
+<identifier> Ax </identifier>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> y </identifier>
+<symbol> = </symbol>
+<identifier> Ay </identifier>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> size </identifier>
+<symbol> = </symbol>
+<identifier> Asize </identifier>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> draw </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<keyword> this </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> dispose </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> Memory </identifier>
+<symbol> . </symbol>
+<identifier> deAlloc </identifier>
+<symbol> ( </symbol>
+<keyword> this </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> draw </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> true </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> erase </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> false </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> incSize </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<symbol> ( </symbol>
+<symbol> ( </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> &lt; </symbol>
+<integerConstant> 254 </integerConstant>
+<symbol> ) </symbol>
+<symbol> &amp; </symbol>
+<symbol> ( </symbol>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> &lt; </symbol>
+<integerConstant> 510 </integerConstant>
+<symbol> ) </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> erase </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> size </identifier>
+<symbol> = </symbol>
+<identifier> size </identifier>
+<symbol> + </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> draw </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> decSize </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> size </identifier>
+<symbol> &gt; </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> erase </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> size </identifier>
+<symbol> = </symbol>
+<identifier> size </identifier>
+<symbol> - </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> draw </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> moveUp </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> y </identifier>
+<symbol> &gt; </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> false </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<symbol> ( </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> - </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> y </identifier>
+<symbol> = </symbol>
+<identifier> y </identifier>
+<symbol> - </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> true </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> moveDown </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<symbol> ( </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> &lt; </symbol>
+<integerConstant> 254 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> false </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> y </identifier>
+<symbol> = </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> true </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<symbol> ( </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> - </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> moveLeft </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> &gt; </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> false </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> - </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> x </identifier>
+<symbol> = </symbol>
+<identifier> x </identifier>
+<symbol> - </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> true </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> method </keyword>
+<keyword> void </keyword>
+<identifier> moveRight </identifier>
+<symbol> ( </symbol>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> if </keyword>
+<symbol> ( </symbol>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> &lt; </symbol>
+<integerConstant> 510 </integerConstant>
+<symbol> ) </symbol>
+<symbol> { </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> false </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> let </keyword>
+<identifier> x </identifier>
+<symbol> = </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<integerConstant> 2 </integerConstant>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> setColor </identifier>
+<symbol> ( </symbol>
+<keyword> true </keyword>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<keyword> do </keyword>
+<identifier> Screen </identifier>
+<symbol> . </symbol>
+<identifier> drawRectangle </identifier>
+<symbol> ( </symbol>
+<symbol> ( </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> - </symbol>
+<integerConstant> 1 </integerConstant>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> , </symbol>
+<identifier> x </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> , </symbol>
+<identifier> y </identifier>
+<symbol> + </symbol>
+<identifier> size </identifier>
+<symbol> ) </symbol>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<keyword> return </keyword>
+<symbol> ; </symbol>
+<symbol> } </symbol>
+<symbol> } </symbol>
+</tokens>

@@ -28,14 +28,17 @@ class JackAnalyzer {
             writer = new Writer(outputs[i]);
             tokenizer = new JackTokenizer(files[i]);
             // Compilation engine code goes here.
+            writer.writeToken("<tokens>");
             translate();
+            writer.writeToken("</tokens>");
             writer.close();
         }
     }
 
     public static void translate() throws IOException {
         while (tokenizer.hasMoreTokens()) {
-            writer.writeToken(tokenizer.advance());
+            tokenizer.advance();
+            writer.writeToken(tokenizer.toXML());
         }
     }
 }
