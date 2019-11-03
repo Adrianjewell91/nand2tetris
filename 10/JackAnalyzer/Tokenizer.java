@@ -10,11 +10,12 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-class JackTokenizer {
+class Tokenizer {
     private Scanner scanner;
     private String line;
     private String token;
     private String tokenType;
+    // Put all the patterns and maps into their own classes for readability:
     private final Pattern keyword = Pattern.compile("^class|^constructor|^function|^method|^field|^static|^var|^int|^char|^boolean|^void|^true|^false|^null|^this|^let|^do|^if|^else|^while|^return");
     private final List<String> symbols = Arrays.asList("{","}","(",")","[","]",".",",",";","+","-","*","/","&","|","<",">","=","~");
     private final Map<String, String> xmlFormatter = new HashMap<String, String> () {
@@ -35,6 +36,7 @@ class JackTokenizer {
          */
         private static final long serialVersionUID = 1L;
         {
+            //MAP the constants to a map the same reason we did it with REDUX actions.
             put("KEYWORD", "keyword");
             put("INT_CONST", "integerConstant");
             put("STRING_CONST","stringConstant");
@@ -43,7 +45,7 @@ class JackTokenizer {
         }
     };
 
-    JackTokenizer(String p) throws FileNotFoundException {
+    Tokenizer(String p) throws FileNotFoundException {
         scanner = new Scanner(new File(p));
         if (scanner.hasNextLine())
         _nextLine();
@@ -56,6 +58,7 @@ class JackTokenizer {
     public String getTokenType() {
         return tokenType;
     }
+    
     public String advance() {
         token = _nextToken();
         if (_shouldGetNextLine())
@@ -74,9 +77,11 @@ class JackTokenizer {
     private String _nextToken() {
         line = line.trim();
         switch (_analyzeCharacter()) {
+            // Map the integers for readability:
             case 0:
             Matcher keywordMatcher = keyword.matcher(line);
             keywordMatcher.find();
+            //Could refactor these into individual methods:
             token = line.substring(0, keywordMatcher.end());
             tokenType = "KEYWORD";
             line = line.substring(keywordMatcher.end());
@@ -101,8 +106,6 @@ class JackTokenizer {
             case -1:
             token = "";
             tokenType = "IDENTIFIER";
-            // The problem is that some identifiers contain keywords or other things.
-            // so if I hit a space, I should terminate the token. 
             while (_analyzeCharacter() != 1) {
                 if (line.substring(0, 1).equals(" ")) {
                     line = line.substring(1);
@@ -112,10 +115,8 @@ class JackTokenizer {
                     line = line.substring(1);
                 }
             }
-            // token = token.trim();
             break;
         }
-        // System.out.println(token);
         return token;
     }
 
@@ -125,6 +126,7 @@ class JackTokenizer {
         line = line.trim();
         if (_shouldGetNextLine())
             this._nextLine();
+        //This too:
         else if (Arrays.asList("/**", "*", "*/").contains(this.line.split(" ")[0]))
             this._nextLine();
     }
@@ -132,6 +134,7 @@ class JackTokenizer {
     private Integer _analyzeCharacter() {
         Matcher keywordMatcher = keyword.matcher(line);
         if (keywordMatcher.find()) {
+            // Map these for readability to a map file.
             return 0; // KEYWORD
         } else if (symbols.contains(line.substring(0,1))) {
             return 1; // SYMBOL
@@ -152,6 +155,7 @@ class JackTokenizer {
         for (int i = 5; i > 0; i--) {
             try {
                 String s = line.substring(0,i);
+                // Set 32768 to a MAX_INT variable.
                 if (Integer.parseInt(s) < 32768) return i;
             } catch(Exception e) {
 

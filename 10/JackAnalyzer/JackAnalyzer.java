@@ -3,7 +3,7 @@ package JackAnalyzer;
 import java.io.IOException;
 
 class JackAnalyzer {
-    private static JackTokenizer tokenizer;
+    private static Tokenizer tokenizer;
     private static Writer writer;
     
     public static void main(String[] args) throws IOException {
@@ -36,7 +36,7 @@ class JackAnalyzer {
 
     public static void tokenize(String path, String output) throws IOException {
         writer = new Writer(output);
-        tokenizer = new JackTokenizer(path);
+        tokenizer = new Tokenizer(path);
         writer.writeToken("<tokens>");
         while (tokenizer.hasMoreTokens()) {
             tokenizer.advance();
