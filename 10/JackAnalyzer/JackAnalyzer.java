@@ -29,8 +29,8 @@ class JackAnalyzer {
 
     public static void compile(String[] files, String[] tokenOutputs, String[] outputs) throws IOException {
         for (int i = 0; i < files.length; i++) {
-            tokenize(files[i], tokenOutputs[i]);
-            // parse(tokenOutputs[i], outputs[i]);
+            // tokenize(files[i], tokenOutputs[i]);
+            parse(tokenOutputs[i], outputs[i]);
         }
     }
 
@@ -44,5 +44,9 @@ class JackAnalyzer {
         }
         writer.writeToken("</tokens>");
         writer.close();
+    }
+
+    public static void parse(String path, String output)throws IOException {
+        new Parser(path, output);
     }
 }
