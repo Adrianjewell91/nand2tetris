@@ -127,22 +127,25 @@ class Parser {
             switch(_getValue()) {
                 case "while":
                 _compileWhile();
+                advance(); // advance beyond the ";" to the possible next statement.
                 break;
                 case "return":
                 _compileReturn();
+                advance(); // advance beyond the ";" to the possible next statement.
                 break;
                 case "if":
                 _compileIf();
                 break;
                 case "let":
                 _compileLet();
+                advance(); // advance beyond the ";" to the possible next statement.
                 break;
                 case "do":
                 _compileDo();
+                advance(); // advance beyond the ";" to the possible next statement.
                 break;
             } 
 
-            advance(); // advance beyond the ";" to the possible next statement.
         }
         writer.writeToken("</statements>");
     }
@@ -155,8 +158,9 @@ class Parser {
         if (_getValue().equals(".")) {
             writer.writeToken(line);
             writer.writeToken(advance());
+            advance();
         }
-        writer.writeToken(advance());
+        writer.writeToken(line);
         advance();
         _compileExpressionList();
         writer.writeToken(line);
@@ -207,11 +211,37 @@ class Parser {
 
     private void _compileReturn() {
         writer.writeToken("<returnStatement>");
+        writer.writeToken(line);
+        advance();
+        if (!_getValue().equals(";")) {
+            _compileExpression();
+        }
+        writer.writeToken(line);
         writer.writeToken("</returnStatement>");
     }
 
     private void _compileIf() {
         writer.writeToken("<ifStatement>");
+        writer.writeToken(line);
+        writer.writeToken(advance());
+        advance();
+        _compileExpression();
+        writer.writeToken(line);
+        writer.writeToken(advance());
+        advance();
+        _compileStatements();
+        // check "else"
+        
+        writer.writeToken(line);
+        advance(); //this will leave me at the next line after the statement.
+        if (_getValue().equals("else")) {
+            writer.writeToken(line);
+            writer.writeToken(advance());
+            advance(); 
+            _compileStatements();
+            writer.writeToken(line);
+            advance(); 
+        }
         writer.writeToken("</ifStatement>");
     }
 

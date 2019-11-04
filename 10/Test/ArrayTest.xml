@@ -275,9 +275,11 @@
 <symbol> ; </symbol>
 </doStatement>
 <returnStatement>
+<keyword> return </keyword>
+<symbol> ; </symbol>
 </returnStatement>
 </statements>
-<symbol> ; </symbol>
+<symbol> } </symbol>
 </subroutineBody>
 </subroutineDec>
 <symbol> } </symbol>
