@@ -69,9 +69,21 @@
 <symbol> ; </symbol>
 </letStatement>
 <doStatement>
+<keyword> do </keyword>
+<identifier> draw </identifier>
+<symbol> ) </symbol>
+<expressionList>
+<expression>
+<term>
+<symbol> ; </symbol>
+</term>
+</expression>
+</expressionList>
+<keyword> return </keyword>
+<keyword> this </keyword>
 </doStatement>
 </statements>
-<identifier> draw </identifier>
+<symbol> ; </symbol>
 </subroutineBody>
 </subroutineDec>
 <symbol> } </symbol>

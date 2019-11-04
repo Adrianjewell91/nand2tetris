@@ -149,6 +149,18 @@ class Parser {
 
     private void _compileDo() {
         writer.writeToken("<doStatement>");
+        writer.writeToken(line);
+        writer.writeToken(advance());
+        advance();
+        if (_getValue().equals(".")) {
+            writer.writeToken(line);
+            writer.writeToken(advance());
+        }
+        writer.writeToken(advance());
+        advance();
+        _compileExpressionList();
+        writer.writeToken(line);
+        writer.writeToken(advance());
         writer.writeToken("</doStatement>");
     }
 
@@ -162,6 +174,7 @@ class Parser {
         // check the optional [expression] attachment  
         if (_getValue().equals("[")) {
             writer.writeToken(line); // for [
+                advance();
             _compileExpression();
             // advance for "]"
             writer.writeToken(line);
@@ -179,6 +192,16 @@ class Parser {
 
     private void _compileWhile() {
         writer.writeToken("<whileStatement>");
+        writer.writeToken(line); //while
+        writer.writeToken(advance()); // (
+        advance();
+        _compileExpression(); // expression
+        writer.writeToken(line); // )
+        writer.writeToken(advance()); // {
+        advance();
+        _compileStatements();
+        writer.writeToken(line); // }
+        // advance(); // 
         writer.writeToken("</whileStatement>");
     }
 
