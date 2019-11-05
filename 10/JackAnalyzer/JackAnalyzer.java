@@ -3,9 +3,6 @@ package JackAnalyzer;
 import java.io.IOException;
 
 class JackAnalyzer {
-    private static Tokenizer tokenizer;
-    private static Writer writer;
-    
     public static void main(String[] args) throws IOException {
         //Tokenizer Tests.
         String[] files = new String[] {
@@ -35,18 +32,10 @@ class JackAnalyzer {
     }
 
     public static void tokenize(String path, String output) throws IOException {
-        writer = new Writer(output);
-        tokenizer = new Tokenizer(path);
-        writer.writeToken("<tokens>");
-        while (tokenizer.hasMoreTokens()) {
-            tokenizer.advance();
-            writer.writeToken(tokenizer.toXML());
-        }
-        writer.writeToken("</tokens>");
-        writer.close();
+        Tokenizer.tokenize(path, output);
     }
 
     public static void parse(String path, String output)throws IOException {
-        new Parser(path, output);
+        Parser.parse(path, output);
     }
 }

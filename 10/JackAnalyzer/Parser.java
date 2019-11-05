@@ -12,12 +12,15 @@ class Parser {
     Writer writer;
     private final Pattern valuePattern = Pattern.compile("\\s.*\\s");
     private final Pattern typePattern = Pattern.compile("^<.*>\\s");
-    
+
+    static void parse(String p, String output) throws IOException {
+        Parser parser = new Parser(p, output);
+        parser.compileClass();
+    }
+
     Parser(String p, String output) throws IOException {
         scanner = new Scanner(new File(p));
         writer = new Writer(output);
-        _compileClass();
-        writer.close();
     }
 
     public Boolean hasMoreLines() {
@@ -31,10 +34,10 @@ class Parser {
         return line;
     }
 
-    private void _compileClass() {
-        advance(); // skip <tokens>
+    public void compileClass() {
+        advance(); 
+        advance(); // skip <tokens> and move to first token.
         _writeAndAdvance("<class>", false);
-        advance(); // move to first keyword.
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
@@ -44,6 +47,7 @@ class Parser {
         _writeAndAdvance(line, true);
 
         _writeAndAdvance("</class>", false);
+        writer.close();
     }
 
     private void _compileClassVarDec() {
@@ -59,8 +63,7 @@ class Parser {
                 advance();
             }
 
-            _writeAndAdvance("</classVarDec>", false);
-            advance();
+            _writeAndAdvance("</classVarDec>", true);
         }
     }
 
@@ -96,20 +99,15 @@ class Parser {
     }
 
     private void _compileVarDec() {
-        while (true) {
-            if (!Arrays.asList("var").contains(_getValue()))
-                return;
+        while (Arrays.asList("var").contains(_getValue())) {
             _writeAndAdvance("<varDec>", false);
-
             while (true) {
                 _writeAndAdvance(line, false);
                 if (_getValue().equals(";"))
                     break;
                 advance();
             }
-
-            _writeAndAdvance("</varDec>", false);
-            advance();
+            _writeAndAdvance("</varDec>", true);
         }
     }
 
@@ -144,6 +142,7 @@ class Parser {
         _writeAndAdvance("<doStatement>", false);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
+
         if (_getValue().equals(".")) {
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
@@ -157,21 +156,17 @@ class Parser {
 
     private void _compileLet() {
         _writeAndAdvance("<letStatement>", false);
-
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
 
         if (_getValue().equals("[")) {
             _writeAndAdvance(line, true);
             _compileExpression();
-
             _writeAndAdvance(line, true);
         }
 
         _writeAndAdvance(line, true);
-
         _compileExpression();
-
         _writeAndAdvance(line, true);
         _writeAndAdvance("</letStatement>", false);
     }
@@ -180,6 +175,7 @@ class Parser {
         _writeAndAdvance("<whileStatement>", false);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
+
         _compileExpression();
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
@@ -191,6 +187,7 @@ class Parser {
     private void _compileReturn() {
         _writeAndAdvance("<returnStatement>", false);
         _writeAndAdvance(line, true);
+
         if (!_getValue().equals(";")) {
             _compileExpression();
         }
@@ -202,6 +199,7 @@ class Parser {
         _writeAndAdvance("<ifStatement>", false);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
+
         _compileExpression();
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
@@ -230,27 +228,20 @@ class Parser {
     private void _compileTerm() {
         _writeAndAdvance("<term>", false);
 
-        _writeAndAdvance(line, false);
         if (Arrays.asList("-", "~").contains(_getValue())) {
-            advance();
+            _writeAndAdvance(line, true);
             _compileTerm();
-
         } else if (_getValue().equals("(")) {
-            advance();
+            _writeAndAdvance(line, true);
             _compileExpression();
-
             _writeAndAdvance(line, true);
         } else if (!Arrays.asList("keyword", "stringConstant", "integerConstant").contains(_getType())) {
-
-            advance();
-
+            _writeAndAdvance(line, true);
             if (_getValue().equals("[")) {
                 _writeAndAdvance(line, true);
                 _compileExpression();
                 _writeAndAdvance(line, true);
-            }
-
-            else if (_getValue().equals("(")) {
+            } else if (_getValue().equals("(")) {
                 _writeAndAdvance(line, true);
                 _compileExpressionList();
                 _writeAndAdvance(line, true);
@@ -261,9 +252,8 @@ class Parser {
                 _compileExpressionList();
                 _writeAndAdvance(line, true);
             }
-
         } else {
-            advance();
+            _writeAndAdvance(line, true);
         }
         _writeAndAdvance("</term>", false);
     }
@@ -297,9 +287,11 @@ class Parser {
     }
 
     private void _writeAndAdvance(String token, Boolean shouldAdvance) {
-        // Eventually add error handling or readability thing to check writing the right token.
-        // Could as a parameters, tokenType and expected value with regex matcher etc.
         writer.writeToken(token);
-        if(shouldAdvance) advance();
+        if (shouldAdvance)
+            advance();
     }
 }
+
+// Every _compile functio should start with line being the first line to be written 
+// and return with the current line being first line afterward.

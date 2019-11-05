@@ -1,7 +1,10 @@
+//How can I make each class less than 125 lines of code?
+
 package JackAnalyzer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +48,18 @@ class Tokenizer {
             put("IDENTIFIER", "identifier");
         }
     };
+
+    static void tokenize(String path, String output) throws IOException {
+        Writer writer = new Writer(output);
+        Tokenizer tokenizer = new Tokenizer(path);
+        writer.writeToken("<tokens>");
+        while (tokenizer.hasMoreTokens()) {
+            tokenizer.advance();
+            writer.writeToken(tokenizer.toXML());
+        }
+        writer.writeToken("</tokens>");
+        writer.close();
+    }
 
     Tokenizer(String p) throws FileNotFoundException {
         scanner = new Scanner(new File(p));
