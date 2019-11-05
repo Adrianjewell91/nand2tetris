@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-// Refactoring the code would be good idea I think.
 class Parser {
     Scanner scanner;
     String line;
@@ -14,10 +13,16 @@ class Parser {
     private final Pattern valuePattern = Pattern.compile("\\s.*\\s");
     private final Pattern typePattern = Pattern.compile("^<.*>\\s");
 
+    static void parse(String p, String output) throws IOException {
+        Parser parser = new Parser(p, output);
+        parser.compileClass();
+    }
+
     Parser(String p, String output) throws IOException {
         scanner = new Scanner(new File(p));
         writer = new Writer(output);
-        _compileClass();
+        advance(); 
+        advance(); // skip <tokens> and move to first token.
     }
 
     public Boolean hasMoreLines() {
@@ -31,305 +36,251 @@ class Parser {
         return line;
     }
 
-    private void _compileClass() {
-        advance();
-        writer.writeToken("<class>");
-        for (int i = 0; i < 3; i++) {
-            writer.writeToken(advance());
-        }
-        advance();
+    public void compileClass() {
+        _writeAndAdvance("<class>", false);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
 
         _compileClassVarDec();
         _compileSubroutine();
-        writer.writeToken("<symbol> } </symbol>");
+        _writeAndAdvance(line, true);
 
-        writer.writeToken("</class>");
+        _writeAndAdvance("</class>", false);
         writer.close();
     }
 
     private void _compileClassVarDec() {
-        while (true) {
-            if (!Arrays.asList("static", "field").contains(_getValue()))
-                return;
-            writer.writeToken("<classVarDec>");
+        while (Arrays.asList("static", "field").contains(_getValue())) {
+            _writeAndAdvance("<classVarDec>", false);
 
             while (true) {
-                writer.writeToken(line);
+                _writeAndAdvance(line, false);
                 if (_getValue().equals(";"))
                     break;
                 advance();
             }
-
-            writer.writeToken("</classVarDec>");
-            advance();
+            _writeAndAdvance("</classVarDec>", true);
         }
     }
 
     private void _compileSubroutine() {
-        while (true) {
-            if (!Arrays.asList("function", "constructor", "method").contains(_getValue()))
-                return;
-            writer.writeToken("<subroutineDec>");
-
-            writer.writeToken(line);
-            writer.writeToken(advance());
-            writer.writeToken(advance());
-            writer.writeToken(advance());
-            advance();
+        while (Arrays.asList("function", "constructor", "method").contains(_getValue())) {
+            _writeAndAdvance("<subroutineDec>", false);
+            _writeAndAdvance(line, true);
+            _writeAndAdvance(line, true);
+            _writeAndAdvance(line, true);
+            _writeAndAdvance(line, true);
             _compileParameterList();
-            writer.writeToken("<subroutineBody>");
-            writer.writeToken(line);
-            advance();
+            _writeAndAdvance("<subroutineBody>", false);
+            _writeAndAdvance(line, true);
             _compileVarDec();
             _compileStatements();
-            writer.writeToken(line);
-            writer.writeToken("</subroutineBody>");
-            writer.writeToken("</subroutineDec>");
-            advance();
+            _writeAndAdvance(line, true);
+            _writeAndAdvance("</subroutineBody>", false);
+            _writeAndAdvance("</subroutineDec>", false);
         }
-
     }
 
     private void _compileParameterList() {
-        writer.writeToken("<parameterList>");
+        _writeAndAdvance("<parameterList>", false);
         while (!_getValue().equals(")")) {
-            writer.writeToken(line);
-            advance();
+            _writeAndAdvance(line, true);
         }
-        writer.writeToken("</parameterList>");
-        writer.writeToken(line);
-        advance();
+        _writeAndAdvance("</parameterList>", false);
+        _writeAndAdvance(line, true);
     }
 
     private void _compileVarDec() {
-        while (true) {
-            if (!Arrays.asList("var").contains(_getValue()))
-                return;
-            writer.writeToken("<varDec>");
-
+        while (Arrays.asList("var").contains(_getValue())) {
+            _writeAndAdvance("<varDec>", false);
             while (true) {
-                writer.writeToken(line);
+                _writeAndAdvance(line, false);
                 if (_getValue().equals(";"))
                     break;
                 advance();
             }
-
-            writer.writeToken("</varDec>");
-            advance();
+            _writeAndAdvance("</varDec>", true);
         }
     }
 
     private void _compileStatements() {
-        writer.writeToken("<statements>");
+        _writeAndAdvance("<statements>", false);
         while (true) {
             if (!Arrays.asList("while", "return", "if", "let", "do").contains(_getValue()))
                 break;
             switch (_getValue()) {
             case "while":
                 _compileWhile();
-                advance();
                 break;
             case "return":
                 _compileReturn();
-                advance();
                 break;
             case "if":
                 _compileIf();
                 break;
             case "let":
                 _compileLet();
-                advance();
                 break;
             case "do":
                 _compileDo();
-                advance();
                 break;
             }
-
         }
-        writer.writeToken("</statements>");
+        _writeAndAdvance("</statements>", false);
     }
 
     private void _compileDo() {
-        writer.writeToken("<doStatement>");
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeAndAdvance("<doStatement>", false);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
+
         if (_getValue().equals(".")) {
-            writer.writeToken(line);
-            writer.writeToken(advance());
-            advance();
+            _writeAndAdvance(line, true);
+            _writeAndAdvance(line, true);
         }
-        writer.writeToken(line);
-        advance();
+        _writeAndAdvance(line, true);
         _compileExpressionList();
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        writer.writeToken("</doStatement>");
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance("</doStatement>", false);
     }
 
     private void _compileLet() {
-        writer.writeToken("<letStatement>");
-
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeAndAdvance("<letStatement>", false);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
 
         if (_getValue().equals("[")) {
-            writer.writeToken(line);
-            advance();
+            _writeAndAdvance(line, true);
             _compileExpression();
-
-            writer.writeToken(line);
-            advance();
+            _writeAndAdvance(line, true);
         }
 
-        writer.writeToken(line);
-        advance();
-
+        _writeAndAdvance(line, true);
         _compileExpression();
-
-        writer.writeToken(line);
-        writer.writeToken("</letStatement>");
+        _writeAndAdvance(line, true);
+        _writeAndAdvance("</letStatement>", false);
     }
 
     private void _compileWhile() {
-        writer.writeToken("<whileStatement>");
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
-        _compileExpression();
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
-        _compileStatements();
-        writer.writeToken(line);
+        _writeAndAdvance("<whileStatement>", false);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
 
-        writer.writeToken("</whileStatement>");
+        _compileExpression();
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
+        _compileStatements();
+        _writeAndAdvance(line, true);
+        _writeAndAdvance("</whileStatement>", false);
     }
 
     private void _compileReturn() {
-        writer.writeToken("<returnStatement>");
-        writer.writeToken(line);
-        advance();
+        _writeAndAdvance("<returnStatement>", false);
+        _writeAndAdvance(line, true);
+
         if (!_getValue().equals(";")) {
             _compileExpression();
         }
-        writer.writeToken(line);
-        writer.writeToken("</returnStatement>");
+        _writeAndAdvance(line, true);
+        _writeAndAdvance("</returnStatement>", false);
     }
 
     private void _compileIf() {
-        writer.writeToken("<ifStatement>");
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeAndAdvance("<ifStatement>", false);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
+
         _compileExpression();
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
         _compileStatements();
 
-        writer.writeToken(line);
-        advance();
+        _writeAndAdvance(line, true);
         if (_getValue().equals("else")) {
-            writer.writeToken(line);
-            writer.writeToken(advance());
-            advance();
+            _writeAndAdvance(line, true);
+            _writeAndAdvance(line, true);
             _compileStatements();
-            writer.writeToken(line);
-            advance();
+            _writeAndAdvance(line, true);
         }
-        writer.writeToken("</ifStatement>");
+        _writeAndAdvance("</ifStatement>", false);
     }
 
     private void _compileExpression() {
-        writer.writeToken("<expression>");
+        _writeAndAdvance("<expression>", false);
         _compileTerm();
         while (Arrays.asList("+", "-", "*", "/", "&amp;", "|", "&lt;", "&gt;", "=").contains(_getValue())) {
-            writer.writeToken(line);
-            advance();
+            _writeAndAdvance(line, true);
             _compileTerm();
         }
-        writer.writeToken("</expression>");
+        _writeAndAdvance("</expression>", false);
     }
 
     private void _compileTerm() {
-        writer.writeToken("<term>");
+        _writeAndAdvance("<term>", false);
 
-        writer.writeToken(line);
         if (Arrays.asList("-", "~").contains(_getValue())) {
-            advance();
+            _writeAndAdvance(line, true);
             _compileTerm();
-
         } else if (_getValue().equals("(")) {
-            advance();
+            _writeAndAdvance(line, true);
             _compileExpression();
-
-            writer.writeToken(line);
-            advance();
+            _writeAndAdvance(line, true);
         } else if (!Arrays.asList("keyword", "stringConstant", "integerConstant").contains(_getType())) {
-
-            advance();
-
+            _writeAndAdvance(line, true);
             if (_getValue().equals("[")) {
-                writer.writeToken(line);
-                advance();
+                _writeAndAdvance(line, true);
                 _compileExpression();
-                writer.writeToken(line);
-
-                advance();
-            }
-
-            else if (_getValue().equals("(")) {
-                writer.writeToken(line);
-                advance();
+                _writeAndAdvance(line, true);
+            } else if (_getValue().equals("(")) {
+                _writeAndAdvance(line, true);
                 _compileExpressionList();
-                writer.writeToken(line);
-                advance();
+                _writeAndAdvance(line, true);
             } else if (_getValue().equals(".")) {
-
-                writer.writeToken(line);
-                writer.writeToken(advance());
-                writer.writeToken(advance());
-                advance();
+                _writeAndAdvance(line, true);
+                _writeAndAdvance(line, true);
+                _writeAndAdvance(line, true);
                 _compileExpressionList();
-                writer.writeToken(line);
-                advance();
+                _writeAndAdvance(line, true);
             }
-
         } else {
-            advance();
+            _writeAndAdvance(line, true);
         }
-        writer.writeToken("</term>");
+        _writeAndAdvance("</term>", false);
     }
 
     private void _compileExpressionList() {
-        writer.writeToken("<expressionList>");
+        _writeAndAdvance("<expressionList>", false);
         if (!_getValue().equals(")")) {
             _compileExpression();
             while (_getValue().equals(",")) {
-                writer.writeToken(line);
-                advance();
+                _writeAndAdvance(line, true);
                 _compileExpression();
             }
         }
-        writer.writeToken("</expressionList>");
+        _writeAndAdvance("</expressionList>", false);
     }
 
     private String _getValue() {
-        java.util.regex.Matcher m = valuePattern.matcher(line);
+        return _parseHelper(valuePattern, 0, 0);
+    }
+
+    private String _getType() {
+        return _parseHelper(typePattern, 1, -2);
+    }
+
+    private String _parseHelper(Pattern pattern, Integer offsetLeft, Integer offsetRight) {
+        java.util.regex.Matcher m = pattern.matcher(line);
         if (m.find()) {
-            return line.substring(m.start(), m.end()).trim();
+            return line.substring(m.start() + offsetLeft, m.end() + offsetRight).trim();
         }
         return "";
     }
 
-    private String _getType() {
-        java.util.regex.Matcher m = typePattern.matcher(line);
-        if (m.find()) {
-            return line.substring(m.start() + 1, m.end() - 2).trim();
-        }
-        return "";
+    private void _writeAndAdvance(String token, Boolean shouldAdvance) {
+        writer.writeToken(token);
+        if (shouldAdvance)
+            advance();
     }
 }
