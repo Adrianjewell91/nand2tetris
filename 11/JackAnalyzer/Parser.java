@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+// Refactoring the code would be good idea I think.
 class Parser {
     Scanner scanner;
     String line;
@@ -126,18 +127,22 @@ class Parser {
             switch (_getValue()) {
             case "while":
                 _compileWhile();
+                advance();
                 break;
             case "return":
                 _compileReturn();
+                advance();
                 break;
             case "if":
                 _compileIf();
                 break;
             case "let":
                 _compileLet();
+                advance();
                 break;
             case "do":
                 _compileDo();
+                advance();
                 break;
             }
 
@@ -160,7 +165,6 @@ class Parser {
         _compileExpressionList();
         writer.writeToken(line);
         writer.writeToken(advance());
-        advance();
         writer.writeToken("</doStatement>");
     }
 
@@ -186,7 +190,6 @@ class Parser {
         _compileExpression();
 
         writer.writeToken(line);
-        advance();
         writer.writeToken("</letStatement>");
     }
 
@@ -201,7 +204,7 @@ class Parser {
         advance();
         _compileStatements();
         writer.writeToken(line);
-        advance();
+
         writer.writeToken("</whileStatement>");
     }
 
@@ -213,7 +216,6 @@ class Parser {
             _compileExpression();
         }
         writer.writeToken(line);
-        advance();
         writer.writeToken("</returnStatement>");
     }
 
@@ -316,17 +318,17 @@ class Parser {
     }
 
     private String _getValue() {
-        return _parseHelper(valuePattern, 0, 0);
+        java.util.regex.Matcher m = valuePattern.matcher(line);
+        if (m.find()) {
+            return line.substring(m.start(), m.end()).trim();
+        }
+        return "";
     }
 
     private String _getType() {
-        return _parseHelper(typePattern, 1, -2);
-    }
-
-    private String _parseHelper(Pattern pattern, Integer offsetLeft, Integer offsetRight) {
-        java.util.regex.Matcher m = pattern.matcher(line);
+        java.util.regex.Matcher m = typePattern.matcher(line);
         if (m.find()) {
-            return line.substring(m.start() + offsetLeft, m.end() + offsetRight).trim();
+            return line.substring(m.start() + 1, m.end() - 2).trim();
         }
         return "";
     }

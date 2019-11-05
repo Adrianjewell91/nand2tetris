@@ -29,7 +29,7 @@ class JackAnalyzer {
 
     public static void compile(String[] files, String[] tokenOutputs, String[] outputs) throws IOException {
         for (int i = 0; i < files.length; i++) {
-            // tokenize(files[i], tokenOutputs[i]);
+            tokenize(files[i], tokenOutputs[i]);
             parse(tokenOutputs[i], outputs[i]);
         }
     }
