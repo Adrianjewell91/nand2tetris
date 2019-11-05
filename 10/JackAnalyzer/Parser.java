@@ -40,7 +40,7 @@ class Parser {
 
         _compileClassVarDec();
         _compileSubroutine();
-        writer.writeToken("<symbol> } </symbol>");
+        _writeTokenAndNewLine();
 
         writer.writeToken("</class>");
         writer.close();
@@ -70,15 +70,13 @@ class Parser {
                 return;
             writer.writeToken("<subroutineDec>");
 
-            writer.writeToken(line);
-            writer.writeToken(advance());
-            writer.writeToken(advance());
-            writer.writeToken(advance());
-            advance();
+            _writeTokenAndNewLine();
+            _writeTokenAndNewLine();
+            _writeTokenAndNewLine();
+            _writeTokenAndNewLine();
             _compileParameterList();
             writer.writeToken("<subroutineBody>");
-            writer.writeToken(line);
-            advance();
+            _writeTokenAndNewLine();
             _compileVarDec();
             _compileStatements();
             writer.writeToken(line);
@@ -92,12 +90,10 @@ class Parser {
     private void _compileParameterList() {
         writer.writeToken("<parameterList>");
         while (!_getValue().equals(")")) {
-            writer.writeToken(line);
-            advance();
+            _writeTokenAndNewLine();
         }
         writer.writeToken("</parameterList>");
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
     }
 
     private void _compileVarDec() {
@@ -147,96 +143,77 @@ class Parser {
 
     private void _compileDo() {
         writer.writeToken("<doStatement>");
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeTokenAndNewLine();
+        _writeTokenAndNewLine();
         if (_getValue().equals(".")) {
-            writer.writeToken(line);
-            writer.writeToken(advance());
-            advance();
+            _writeTokenAndNewLine();
+            _writeTokenAndNewLine();
         }
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
         _compileExpressionList();
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeTokenAndNewLine();
+        _writeTokenAndNewLine();
         writer.writeToken("</doStatement>");
     }
 
     private void _compileLet() {
         writer.writeToken("<letStatement>");
 
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeTokenAndNewLine();
+        _writeTokenAndNewLine();
 
         if (_getValue().equals("[")) {
-            writer.writeToken(line);
-            advance();
+            _writeTokenAndNewLine();
             _compileExpression();
 
-            writer.writeToken(line);
-            advance();
+            _writeTokenAndNewLine();
         }
 
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
 
         _compileExpression();
 
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
         writer.writeToken("</letStatement>");
     }
 
     private void _compileWhile() {
         writer.writeToken("<whileStatement>");
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeTokenAndNewLine();
+        _writeTokenAndNewLine();
         _compileExpression();
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeTokenAndNewLine();
+        _writeTokenAndNewLine();
         _compileStatements();
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
         writer.writeToken("</whileStatement>");
     }
 
     private void _compileReturn() {
         writer.writeToken("<returnStatement>");
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
         if (!_getValue().equals(";")) {
             _compileExpression();
         }
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
         writer.writeToken("</returnStatement>");
     }
 
     private void _compileIf() {
         writer.writeToken("<ifStatement>");
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeTokenAndNewLine();
+        _writeTokenAndNewLine();
         _compileExpression();
-        writer.writeToken(line);
-        writer.writeToken(advance());
-        advance();
+        _writeTokenAndNewLine();
+        _writeTokenAndNewLine();
         _compileStatements();
 
-        writer.writeToken(line);
-        advance();
+        _writeTokenAndNewLine();
         if (_getValue().equals("else")) {
-            writer.writeToken(line);
-            writer.writeToken(advance());
-            advance();
+            _writeTokenAndNewLine();
+            _writeTokenAndNewLine();
             _compileStatements();
-            writer.writeToken(line);
-            advance();
+            _writeTokenAndNewLine();
         }
         writer.writeToken("</ifStatement>");
     }
@@ -245,8 +222,7 @@ class Parser {
         writer.writeToken("<expression>");
         _compileTerm();
         while (Arrays.asList("+", "-", "*", "/", "&amp;", "|", "&lt;", "&gt;", "=").contains(_getValue())) {
-            writer.writeToken(line);
-            advance();
+            _writeTokenAndNewLine();
             _compileTerm();
         }
         writer.writeToken("</expression>");
@@ -264,36 +240,27 @@ class Parser {
             advance();
             _compileExpression();
 
-            writer.writeToken(line);
-            advance();
+            _writeTokenAndNewLine();
         } else if (!Arrays.asList("keyword", "stringConstant", "integerConstant").contains(_getType())) {
 
             advance();
 
             if (_getValue().equals("[")) {
-                writer.writeToken(line);
-                advance();
+                _writeTokenAndNewLine();
                 _compileExpression();
-                writer.writeToken(line);
-
-                advance();
+                _writeTokenAndNewLine();
             }
 
             else if (_getValue().equals("(")) {
-                writer.writeToken(line);
-                advance();
+                _writeTokenAndNewLine();
                 _compileExpressionList();
-                writer.writeToken(line);
-                advance();
+                _writeTokenAndNewLine();
             } else if (_getValue().equals(".")) {
-
-                writer.writeToken(line);
-                writer.writeToken(advance());
-                writer.writeToken(advance());
-                advance();
+                _writeTokenAndNewLine();
+                _writeTokenAndNewLine();
+                _writeTokenAndNewLine();
                 _compileExpressionList();
-                writer.writeToken(line);
-                advance();
+                _writeTokenAndNewLine();
             }
 
         } else {
@@ -307,8 +274,7 @@ class Parser {
         if (!_getValue().equals(")")) {
             _compileExpression();
             while (_getValue().equals(",")) {
-                writer.writeToken(line);
-                advance();
+                _writeTokenAndNewLine();
                 _compileExpression();
             }
         }
@@ -329,5 +295,11 @@ class Parser {
             return line.substring(m.start() + offsetLeft, m.end() + offsetRight).trim();
         }
         return "";
+    }
+
+    private void _writeTokenAndNewLine() {
+        // Eventually add error handling 
+        writer.writeToken(line);
+        advance();
     }
 }
