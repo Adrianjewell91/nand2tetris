@@ -21,6 +21,8 @@ class Parser {
     Parser(String p, String output) throws IOException {
         scanner = new Scanner(new File(p));
         writer = new Writer(output);
+        advance(); 
+        advance(); // skip <tokens> and move to first token.
     }
 
     public Boolean hasMoreLines() {
@@ -35,8 +37,6 @@ class Parser {
     }
 
     public void compileClass() {
-        advance(); 
-        advance(); // skip <tokens> and move to first token.
         _writeAndAdvance("<class>", false);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
@@ -51,9 +51,7 @@ class Parser {
     }
 
     private void _compileClassVarDec() {
-        while (true) {
-            if (!Arrays.asList("static", "field").contains(_getValue()))
-                return;
+        while (Arrays.asList("static", "field").contains(_getValue())) {
             _writeAndAdvance("<classVarDec>", false);
 
             while (true) {
@@ -62,17 +60,13 @@ class Parser {
                     break;
                 advance();
             }
-
             _writeAndAdvance("</classVarDec>", true);
         }
     }
 
     private void _compileSubroutine() {
-        while (true) {
-            if (!Arrays.asList("function", "constructor", "method").contains(_getValue()))
-                return;
+        while (Arrays.asList("function", "constructor", "method").contains(_getValue())) {
             _writeAndAdvance("<subroutineDec>", false);
-
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
@@ -86,7 +80,6 @@ class Parser {
             _writeAndAdvance("</subroutineBody>", false);
             _writeAndAdvance("</subroutineDec>", false);
         }
-
     }
 
     private void _compileParameterList() {
@@ -133,7 +126,6 @@ class Parser {
                 _compileDo();
                 break;
             }
-
         }
         _writeAndAdvance("</statements>", false);
     }
@@ -292,6 +284,3 @@ class Parser {
             advance();
     }
 }
-
-// Every _compile functio should start with line being the first line to be written 
-// and return with the current line being first line afterward.
