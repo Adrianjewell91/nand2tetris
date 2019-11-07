@@ -1,50 +1,31 @@
 package JackAnalyzer;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 class JackAnalyzer {
     public static void main(String[] args) throws IOException {
-        // Seven programs to test:
+        // 1. Write code to parse only the .jack files. 
+        compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Average");
+        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/ComplexArrays");
+        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/ConvertToBin");
+        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Pong");
+        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Seven");
+        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Square");
 
-        // Write code to compile a directory:
-            // Should produce the tokens, the parse tree, and the .vm file (albeit empty atm)
-
-        // I think the way this is supposed to go, is that 
-        // I write vm as I parse the tree, taking the token as queues for what to write. 
-            // The symbol tree will help along the way for identifiers.
-
-            // Write the parse tree -> .vm file code.
-            // 1. Symbol Tree: tracks identifiers as the parse-tree is built.
-            // 2. VM writer -> writes VM code to the .vm file. 
-
-        
-
-        // Tokenizer Tests.
-        // String[] files = new String[] {
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/ArrayTest/Main.jack"};
-        // String[] tokenOutputs = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/ArrayTestT.xml"};
-        // String[] outputs = new String[] {"/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/ArrayTest.xml"};
-        // compile(files, tokenOutputs, outputs);
-
-        // files = new String[] {
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Square/Main.jack",
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Square/Square.jack",
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Square/SquareGame.jack", };
-        // tokenOutputs = new String[] { "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/SquareMainT.xml",
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/SquareT.xml",
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/SquareGameT.xml", };
-        // outputs = new String[] { "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/SquareMain.xml",
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/Square.xml",
-        //         "/Users/adrianjewell/Desktop/nand2tetris/projects/10/Test/SquareGame.xml", };
-        // compile(files, tokenOutputs, outputs);
+        // 2. Write the VM code writer. 
+            // Involves the symbol tree and the VM writer. 
     }
 
-    public static void compile(String[] files, String[] tokenOutputs, String[] outputs) throws IOException {
-        for (int i = 0; i < files.length; i++) {
-            tokenize(files[i], tokenOutputs[i]);
-            parse(tokenOutputs[i], outputs[i]);
-        }
-    }
+    // public static void compile(String[] files, String[] tokenOutputs, String[] outputs) throws IOException {
+    //     for (int i = 0; i < files.length; i++) {
+    //         tokenize(files[i], tokenOutputs[i]);
+    //         parse(tokenOutputs[i], outputs[i]);
+    //     }
+    // }
 
     public static void tokenize(String path, String output) throws IOException {
         Tokenizer.tokenize(path, output);
@@ -52,5 +33,21 @@ class JackAnalyzer {
 
     public static void parse(String path, String output)throws IOException {
         Parser.parse(path, output);
+    }
+
+    public static void compileDirectory(String folder_path) {
+        Path folderPath = Paths.get(folder_path);
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(folderPath)) {
+            for (Path path : directoryStream) {
+                String p = path.toString();
+                if (p.split("\\.")[1].equals("jack")) {
+                    tokenize(p, p.split("\\.")[0] + "T.xml");
+                    parse(p.split("\\.")[0] + "T.xml", p.split("\\.")[0] + ".xml");
+                }
+            }
+        } catch (IOException ex) {
+            System.err.println("Error reading files");
+            ex.printStackTrace();
+        }
     }
 }
