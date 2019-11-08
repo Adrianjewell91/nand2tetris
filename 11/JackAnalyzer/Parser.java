@@ -10,8 +10,14 @@ class Parser {
     Scanner scanner;
     String line;
     Writer writer;
+    VMWriter codeWriter;
+    // private SymbolTable symbols = new SymbolTable();
     private final Pattern valuePattern = Pattern.compile("\\s.*\\s");
     private final Pattern typePattern = Pattern.compile("^<.*>\\s");
+
+    private String className;
+    private Integer numLocals;
+    private Integer expressionsCount;
 
     static void parse(String p, String output) throws IOException {
         Parser parser = new Parser(p, output);
@@ -21,8 +27,10 @@ class Parser {
     Parser(String p, String output) throws IOException {
         scanner = new Scanner(new File(p));
         writer = new Writer(output);
+        codeWriter = new VMWriter(output.split("\\.")[0] + ".vm");
+        // skip "<tokens>"" and move to first token.
         advance(); 
-        advance(); // skip <tokens> and move to first token.
+        advance(); 
     }
 
     public Boolean hasMoreLines() {
@@ -39,6 +47,7 @@ class Parser {
     public void compileClass() {
         _writeAndAdvance("<class>", false);
         _writeAndAdvance(line, true);
+        this.className = _getValue();
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
 
@@ -47,6 +56,7 @@ class Parser {
         _writeAndAdvance(line, true);
 
         _writeAndAdvance("</class>", false);
+        codeWriter.close();
         writer.close();
     }
 
@@ -67,14 +77,20 @@ class Parser {
     private void _compileSubroutine() {
         while (Arrays.asList("function", "constructor", "method").contains(_getValue())) {
             _writeAndAdvance("<subroutineDec>", false);
+            // SymbolTable.startSubRoutine();
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
+            String name = _getValue();
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
-            _compileParameterList();
+            // get the number of arguments from here.
+            _compileParameterList(); 
+            // VMCODE:
+            // ...
             _writeAndAdvance("<subroutineBody>", false);
             _writeAndAdvance(line, true);
             _compileVarDec();
+            codeWriter.writeFunction(this.className + "." + name, numLocals);
             _compileStatements();
             _writeAndAdvance(line, true);
             _writeAndAdvance("</subroutineBody>", false);
@@ -92,7 +108,9 @@ class Parser {
     }
 
     private void _compileVarDec() {
+        numLocals = 0;
         while (Arrays.asList("var").contains(_getValue())) {
+            numLocals++;
             _writeAndAdvance("<varDec>", false);
             while (true) {
                 _writeAndAdvance(line, false);
@@ -133,14 +151,19 @@ class Parser {
     private void _compileDo() {
         _writeAndAdvance("<doStatement>", false);
         _writeAndAdvance(line, true);
+        String method = _getValue(); 
+        String context = "";
         _writeAndAdvance(line, true);
-
         if (_getValue().equals(".")) {
             _writeAndAdvance(line, true);
+            context = method;
+            method = _getValue();
             _writeAndAdvance(line, true);
         }
         _writeAndAdvance(line, true);
         _compileExpressionList();
+        codeWriter.writeCall(context.equals("") ? method : context + "." + method, expressionsCount);
+        codeWriter.writePop("TEMP", 0);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
         _writeAndAdvance("</doStatement>", false);
@@ -182,8 +205,12 @@ class Parser {
 
         if (!_getValue().equals(";")) {
             _compileExpression();
+            // and push some stuff as the return value;
+        } else {
+            codeWriter.writePush("CONST", 0);
         }
         _writeAndAdvance(line, true);
+        codeWriter.writeReturn();
         _writeAndAdvance("</returnStatement>", false);
     }
 
@@ -211,8 +238,10 @@ class Parser {
         _writeAndAdvance("<expression>", false);
         _compileTerm();
         while (Arrays.asList("+", "-", "*", "/", "&amp;", "|", "&lt;", "&gt;", "=").contains(_getValue())) {
+            String operator = _getValue();
             _writeAndAdvance(line, true);
             _compileTerm();
+            codeWriter.writeArithmetic(operator); // Math.multiply
         }
         _writeAndAdvance("</expression>", false);
     }
@@ -221,8 +250,10 @@ class Parser {
         _writeAndAdvance("<term>", false);
 
         if (Arrays.asList("-", "~").contains(_getValue())) {
+            String op = _getValue();
             _writeAndAdvance(line, true);
             _compileTerm();
+            codeWriter.writeArithmetic(op);
         } else if (_getValue().equals("(")) {
             _writeAndAdvance(line, true);
             _compileExpression();
@@ -245,16 +276,23 @@ class Parser {
                 _writeAndAdvance(line, true);
             }
         } else {
+            if (_getType().equals("integerConstant")) {
+                codeWriter.writePush("CONST", Integer.parseInt(_getValue()));
+            } // other stuff for keyword constant and string.
             _writeAndAdvance(line, true);
         }
-        _writeAndAdvance("</term>", false);
+        _writeAndAdvance("</term>", false);   
     }
 
     private void _compileExpressionList() {
+        expressionsCount = 0;
         _writeAndAdvance("<expressionList>", false);
         if (!_getValue().equals(")")) {
+            expressionsCount++;
+            // Each one gets VMwriten sequentially.
             _compileExpression();
             while (_getValue().equals(",")) {
+                expressionsCount++;
                 _writeAndAdvance(line, true);
                 _compileExpression();
             }
@@ -279,6 +317,9 @@ class Parser {
     }
 
     private void _writeAndAdvance(String token, Boolean shouldAdvance) {
+        //if (_getType().equals('identifier')) 
+        //, but only variables need to be defined.
+            //SymbolTable.define()
         writer.writeToken(token);
         if (shouldAdvance)
             advance();
