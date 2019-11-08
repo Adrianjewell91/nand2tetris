@@ -55,6 +55,8 @@ class Parser {
         _writeAndAdvance(line, true);
 
         _compileClassVarDec();
+        // Write some allocation code here. 
+
         _compileSubroutine();
         _writeAndAdvance(line, true);
 
@@ -64,25 +66,40 @@ class Parser {
     }
 
     private void _compileClassVarDec() {
+        String kind = _getValue();
         while (Arrays.asList("static", "field").contains(_getValue())) {
             _writeAndAdvance("<classVarDec>", false);
+            _writeAndAdvance(line, true); // static or field
+            String type = _getValue();
+            _writeAndAdvance(line, true); // type
 
             while (true) {
-                _writeAndAdvance(line, false);
+                String name = _getValue();
+                symbols.Define(name, type, kind.toUpperCase());
+                _writeAndAdvance(line, true); // name;
+                _writeAndAdvance(line, false); // , or ;
                 if (_getValue().equals(";"))
                     break;
                 advance();
             }
+            // while (true) {
+            //     _writeAndAdvance(line, false);
+            //     if (_getValue().equals(";"))
+            //         break;
+            //     advance();
+            // }
             _writeAndAdvance("</classVarDec>", true);
         }
     }
 
     private void _compileSubroutine() {
         while (Arrays.asList("function", "constructor", "method").contains(_getValue())) {
-            _writeAndAdvance("<subroutineDec>", false);
-            symbols.startSubroutine();
+            String type = _getValue();
             whileEnumerator = 0;
             ifEnumerator = 0;
+            symbols.startSubroutine();
+
+            _writeAndAdvance("<subroutineDec>", false);
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
             String name = _getValue();
@@ -93,6 +110,13 @@ class Parser {
             _writeAndAdvance(line, true);
             _compileVarDec();
             codeWriter.writeFunction(this.className + "." + name, symbols.VarCount("VAR"));
+            
+            if (type.equals("constructor")) {
+                int count = symbols.VarCount("STATIC") + symbols.VarCount("FIELD");
+                codeWriter.writePush("CONSTANT", count);
+                codeWriter.writeCall("Memory.alloc", 1);
+                codeWriter.writePop("POINTER", 0); 
+            }
             _compileStatements();
             _writeAndAdvance(line, true);
             _writeAndAdvance("</subroutineBody>", false);
@@ -164,17 +188,6 @@ class Parser {
     private void _compileDo() {
         _writeAndAdvance("<doStatement>", false);
         _writeAndAdvance(line, true);
-        String name = _getMethodToCall();
-        _compileExpressionList();
-        codeWriter.writeCall(name, expressionsCount);
-        codeWriter.writePop("TEMP", 0);
-        _writeAndAdvance(line, true);
-        _writeAndAdvance(line, true);
-        _writeAndAdvance("</doStatement>", false);
-    }
-
-    //Helper for _compileDo:
-    private String _getMethodToCall() {
         String method = _getValue();
         String context = "";
         _writeAndAdvance(line, true);
@@ -185,8 +198,26 @@ class Parser {
             _writeAndAdvance(line, true);
         }
         _writeAndAdvance(line, true);
-        return context.equals("") ? method : context + "." + method;
+        _compileExpressionList();
+
+        String objectLookUp = symbols.TypeOf(context);
+        if (!objectLookUp.equals("NONE")) {
+            expressionsCount++;
+            codeWriter.writePush(_getSegment(symbols.KindOf(context)), symbols.IndexOf(context));
+            context = objectLookUp;
+        }
+        String name = context.equals("") ? method : context + "." + method;
+        codeWriter.writeCall(name, expressionsCount);
+        codeWriter.writePop("TEMP", 0);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance("</doStatement>", false);
     }
+
+    //Helper for _compileDo:
+    // private String _getMethodToCall() {
+        
+    // }
 
     private void _compileLet() {
         _writeAndAdvance("<letStatement>", false);
@@ -364,6 +395,8 @@ class Parser {
             return "LOCAL";
         } else if (kind.equals("ARG")) {
             return "ARGUMENT";
+        } else if (kind.equals("FIELD")) {
+            return "THIS";
         } else {
             return "";
         }

@@ -26,6 +26,13 @@ class SymbolTable {
     
     public void Define(String name, String type, String kind) { 
         if (kind.equals("STATIC") || kind.equals("FIELD")) {
+            classNameToKind.put(name, kind);
+            classNameToType.put(name, type);
+            if (kind.equals("STATIC")) {
+                classNameToIndex.put(name, classStatics++);
+            } else {
+                classNameToIndex.put(name, classFields++);
+            }
         } else {
             subroutineNameToKind.put(name, kind);
             subroutineNameToType.put(name, type);
@@ -47,7 +54,7 @@ class SymbolTable {
         } else if (kind.equals("FIELD")) {
             return classFields;
         }
-        
+
         return -1;
     }
 

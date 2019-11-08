@@ -8,25 +8,13 @@ import java.nio.file.Paths;
 
 class JackAnalyzer {
     public static void main(String[] args) throws IOException {
-        // 1. Write code to parse only the .jack files.
         // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Average");
         // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/ComplexArrays");
-        compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/ConvertToBin");
+        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/ConvertToBin");
         // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Pong");
         // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Seven");
-        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Square");
-
-        // 2. Write the VM code writer.
-        // Involves the symbol tree and the VM writer.
+        compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Square");
     }
-
-    // public static void compile(String[] files, String[] tokenOutputs, String[]
-    // outputs) throws IOException {
-    // for (int i = 0; i < files.length; i++) {
-    // tokenize(files[i], tokenOutputs[i]);
-    // parse(tokenOutputs[i], outputs[i]);
-    // }
-    // }
 
     public static void tokenize(String path, String output) throws IOException {
         Tokenizer.tokenize(path, output);
