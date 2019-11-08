@@ -13,7 +13,7 @@ class JackAnalyzer {
         // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/ComplexArrays");
         compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/ConvertToBin");
         // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Pong");
-        compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Seven");
+        // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Seven");
         // compileDirectory("/Users/adrianjewell/Documents/Repos/nand2tetris/projects/11/Square");
 
         // 2. Write the VM code writer.

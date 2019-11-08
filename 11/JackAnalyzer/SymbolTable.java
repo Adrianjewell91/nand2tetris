@@ -4,55 +4,74 @@ import java.util.HashMap;
 import java.util.Map;
 
 class SymbolTable {
-    // name ,type, kind, number (of it's kind).
     Map<String,String> classNameToType = new HashMap<String,String>(); 
     Map<String,String> classNameToKind = new HashMap<String,String>(); 
-    Map<String,Integer> classNameToNumber = new HashMap<String,Integer>(); 
+    Map<String,Integer> classNameToIndex = new HashMap<String,Integer>(); 
     Integer classStatics = 0;
     Integer classFields = 0;
 
     Map<String,String> subroutineNameToType = new HashMap<String,String>(); 
     Map<String,String> subroutineNameToKind = new HashMap<String,String>(); 
-    Map<String,Integer> subroutineNameToNumber = new HashMap<String,Integer>(); 
+    Map<String,Integer> subroutineNameToIndex = new HashMap<String,Integer>(); 
     Integer subroutineVars = 0;
     Integer subroutineArgs = 0;
 
     public void startSubroutine () { 
-        // Clear subroutine hashtables.
         subroutineNameToType = new HashMap<String, String>();
         subroutineNameToKind = new HashMap<String, String>();
-        subroutineNameToNumber = new HashMap<String, Integer>();
+        subroutineNameToIndex = new HashMap<String, Integer>();
         subroutineVars = 0;
         subroutineArgs = 0;
-        // actually should try, then return 1 for true, 0 for fail.
     }
     
-    public String Define(String name, String type, String kind) { 
-        // insert
-        if (kind.equals("STATIC")) {
-
+    public void Define(String name, String type, String kind) { 
+        if (kind.equals("STATIC") || kind.equals("FIELD")) {
         } else {
-
+            subroutineNameToKind.put(name, kind);
+            subroutineNameToType.put(name, type);
+            if (kind.equals("ARG")) {
+                subroutineNameToIndex.put(name, subroutineArgs++);
+            } else {
+                subroutineNameToIndex.put(name, subroutineVars++);
+            }
         }
-        return ""; }
+    }
 
-    // Key into hashtable accordingly.
-    public String VarCount() { 
-        // if the subroutine has it then get it,
-        // else get it from class cope. 
+    public Integer VarCount(String kind) { 
+        if (kind.equals("VAR")) {
+            return subroutineVars;
+        } else if (kind.equals("ARG")) {
+            return subroutineArgs;
+        } else if (kind.equals("STATIC")) {
+            return classStatics;
+        } else if (kind.equals("FIELD")) {
+            return classFields;
+        }
         
-        return ""; 
+        return -1;
     }
-    public String KindOf() { 
-        // 
-        return ""; 
+
+    public String KindOf(String key) { 
+        if (subroutineNameToIndex.containsKey(key)) {
+            return subroutineNameToKind.get(key);
+        } else if (classNameToIndex.containsKey(key)) {
+            return classNameToKind.get(key); 
+        } else { return "NONE"; }
     }
-    public String TypeOf() { 
-        //
-        return ""; 
+
+    public String TypeOf(String key) { 
+        if (subroutineNameToIndex.containsKey(key)) {
+            return subroutineNameToType.get(key);
+        } else if (classNameToIndex.containsKey(key)) {
+            return classNameToType.get(key); 
+        }  else { return "NONE"; }
     }
-    public String IndexOf() { 
-        // 
-        return ""; 
+
+    public Integer IndexOf(String key) { 
+        if (subroutineNameToIndex.containsKey(key)) {
+            return subroutineNameToIndex.get(key);
+        } else if (classNameToIndex.containsKey(key)) {
+            return classNameToIndex.get(key); 
+        } else { return -1; }
     }
 }

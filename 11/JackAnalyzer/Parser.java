@@ -11,12 +11,11 @@ class Parser {
     String line;
     Writer writer;
     VMWriter codeWriter;
-    // private SymbolTable symbols = new SymbolTable();
+    private SymbolTable symbols = new SymbolTable();
     private final Pattern valuePattern = Pattern.compile("\\s.*\\s");
     private final Pattern typePattern = Pattern.compile("^<.*>\\s");
 
     private String className;
-    private Integer numLocals;
     private Integer expressionsCount;
 
     static void parse(String p, String output) throws IOException {
@@ -77,20 +76,17 @@ class Parser {
     private void _compileSubroutine() {
         while (Arrays.asList("function", "constructor", "method").contains(_getValue())) {
             _writeAndAdvance("<subroutineDec>", false);
-            // SymbolTable.startSubRoutine();
+            symbols.startSubroutine();
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
             String name = _getValue();
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
-            // get the number of arguments from here.
             _compileParameterList(); 
-            // VMCODE:
-            // ...
             _writeAndAdvance("<subroutineBody>", false);
             _writeAndAdvance(line, true);
             _compileVarDec();
-            codeWriter.writeFunction(this.className + "." + name, numLocals);
+            codeWriter.writeFunction(this.className + "." + name, symbols.VarCount("VAR"));
             _compileStatements();
             _writeAndAdvance(line, true);
             _writeAndAdvance("</subroutineBody>", false);
@@ -101,19 +97,29 @@ class Parser {
     private void _compileParameterList() {
         _writeAndAdvance("<parameterList>", false);
         while (!_getValue().equals(")")) {
+            // Two passes, one for the type and one for the name.
+            String type = _getValue(); 
             _writeAndAdvance(line, true);
+            String name = _getValue();
+            _writeAndAdvance(line, true);
+            symbols.Define(name, type, "ARG");
         }
         _writeAndAdvance("</parameterList>", false);
         _writeAndAdvance(line, true);
     }
 
     private void _compileVarDec() {
-        numLocals = 0;
         while (Arrays.asList("var").contains(_getValue())) {
-            numLocals++;
             _writeAndAdvance("<varDec>", false);
+            _writeAndAdvance(line, true); // var
+            String type = _getValue();
+            _writeAndAdvance(line, true); //type
+            
             while (true) {
-                _writeAndAdvance(line, false);
+                String name = _getValue();
+                symbols.Define(name, type, "VAR");
+                _writeAndAdvance(line, true); //name;
+                _writeAndAdvance(line, false); // , or ;
                 if (_getValue().equals(";"))
                     break;
                 advance();
@@ -172,8 +178,18 @@ class Parser {
     private void _compileLet() {
         _writeAndAdvance("<letStatement>", false);
         _writeAndAdvance(line, true);
-        _writeAndAdvance(line, true);
+        
+        // CodeWriter:
+        int idx = symbols.IndexOf(_getValue());
+        String segment;
+        // if (Arrays.asList("VAR","ARG").contains(symbols.KindOf(_getValue()))) {
+        segment = "local";
+        // } 
+        // else {
+        //     segment = 
+        // }
 
+        _writeAndAdvance(line, true);
         if (_getValue().equals("[")) {
             _writeAndAdvance(line, true);
             _compileExpression();
@@ -182,6 +198,7 @@ class Parser {
 
         _writeAndAdvance(line, true);
         _compileExpression();
+        codeWriter.writePop(segment, idx);
         _writeAndAdvance(line, true);
         _writeAndAdvance("</letStatement>", false);
     }
@@ -317,9 +334,6 @@ class Parser {
     }
 
     private void _writeAndAdvance(String token, Boolean shouldAdvance) {
-        //if (_getType().equals('identifier')) 
-        //, but only variables need to be defined.
-            //SymbolTable.define()
         writer.writeToken(token);
         if (shouldAdvance)
             advance();
