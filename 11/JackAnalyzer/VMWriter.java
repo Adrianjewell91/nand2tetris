@@ -10,15 +10,11 @@ class VMWriter {
     }
 
     public void writePush(String segment, Integer index) {
-        if (segment.equals("CONST")) {
-            writer.writeToken("push constant " + index);
-        }
+        writer.writeToken(String.format("push %s %s", segment.toLowerCase(), index));;
     }
     
     public void writePop(String segment, Integer index) {
-        if (segment.equals("TEMP")) {
-            writer.writeToken("pop temp " + index);
-        }
+        writer.writeToken(String.format("pop %s %s", segment.toLowerCase(), index));
     }
     
     public void writeArithmetic(String operator) {
@@ -27,15 +23,34 @@ class VMWriter {
         } else if (operator.equals("+")) {
             writer.writeToken("add");
         } else if (operator.equals("-")) {
+            writer.writeToken("sub");
+        } else if (operator.equals("NEG")) {
             writer.writeToken("neg");
-        }
+        } else if (operator.equals("~")) {
+            writer.writeToken("not");
+        } else if (operator.equals("&gt;")) {
+            writer.writeToken("gt");
+        } else if (operator.equals("&lt;")) {
+            writer.writeToken("lt");
+        } else if (operator.equals("&amp;")) {
+            writer.writeToken("and");
+        } else if (operator.equals("=")) {
+            writer.writeToken("eq");
+        } 
+        
     }
     
-    public void writeLabel() {}
+    public void writeLabel(String label) {
+        writer.writeToken("label " + label);
+    }
     
-    public void writeGoto() {}
+    public void writeIf(String label) {
+        writer.writeToken("if-goto " + label);
+    }
     
-    public void writeIf() {}
+    public void writeGoto(String label) {
+        writer.writeToken("goto " + label);
+    }
     
     public void writeCall(String name, Integer args) {
         writer.writeToken("call " + name + " " + args);

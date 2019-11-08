@@ -1,5 +1,7 @@
 package JackAnalyzer;
 
+// This thing is so massize how, can i fix this?
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -15,6 +17,8 @@ class Parser {
     private final Pattern valuePattern = Pattern.compile("\\s.*\\s");
     private final Pattern typePattern = Pattern.compile("^<.*>\\s");
 
+    private Integer whileEnumerator = 0;
+    private Integer ifEnumerator = 0;
     private String className;
     private Integer expressionsCount;
 
@@ -77,6 +81,8 @@ class Parser {
         while (Arrays.asList("function", "constructor", "method").contains(_getValue())) {
             _writeAndAdvance("<subroutineDec>", false);
             symbols.startSubroutine();
+            whileEnumerator = 0;
+            ifEnumerator = 0;
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
             String name = _getValue();
@@ -103,6 +109,7 @@ class Parser {
             String name = _getValue();
             _writeAndAdvance(line, true);
             symbols.Define(name, type, "ARG");
+            if (_getValue().equals(",")) advance();
         }
         _writeAndAdvance("</parameterList>", false);
         _writeAndAdvance(line, true);
@@ -157,7 +164,18 @@ class Parser {
     private void _compileDo() {
         _writeAndAdvance("<doStatement>", false);
         _writeAndAdvance(line, true);
-        String method = _getValue(); 
+        String name = _getMethodToCall();
+        _compileExpressionList();
+        codeWriter.writeCall(name, expressionsCount);
+        codeWriter.writePop("TEMP", 0);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance(line, true);
+        _writeAndAdvance("</doStatement>", false);
+    }
+
+    //Helper for _compileDo:
+    private String _getMethodToCall() {
+        String method = _getValue();
         String context = "";
         _writeAndAdvance(line, true);
         if (_getValue().equals(".")) {
@@ -167,12 +185,7 @@ class Parser {
             _writeAndAdvance(line, true);
         }
         _writeAndAdvance(line, true);
-        _compileExpressionList();
-        codeWriter.writeCall(context.equals("") ? method : context + "." + method, expressionsCount);
-        codeWriter.writePop("TEMP", 0);
-        _writeAndAdvance(line, true);
-        _writeAndAdvance(line, true);
-        _writeAndAdvance("</doStatement>", false);
+        return context.equals("") ? method : context + "." + method;
     }
 
     private void _compileLet() {
@@ -181,13 +194,7 @@ class Parser {
         
         // CodeWriter:
         int idx = symbols.IndexOf(_getValue());
-        String segment;
-        // if (Arrays.asList("VAR","ARG").contains(symbols.KindOf(_getValue()))) {
-        segment = "local";
-        // } 
-        // else {
-        //     segment = 
-        // }
+        String segment = _getSegment(symbols.KindOf(_getValue()));
 
         _writeAndAdvance(line, true);
         if (_getValue().equals("[")) {
@@ -205,14 +212,21 @@ class Parser {
 
     private void _compileWhile() {
         _writeAndAdvance("<whileStatement>", false);
+        codeWriter.writeLabel("WHILE_EXP" + whileEnumerator);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
 
         _compileExpression();
+        codeWriter.writeArithmetic("~");
+        codeWriter.writeIf("WHILE_END" + whileEnumerator);
+        Integer whileEnum = whileEnumerator;
+        whileEnumerator++;
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
         _compileStatements();
         _writeAndAdvance(line, true);
+        codeWriter.writeGoto("WHILE_EXP" + whileEnum);
+        codeWriter.writeLabel("WHILE_END" + whileEnum);
         _writeAndAdvance("</whileStatement>", false);
     }
 
@@ -222,9 +236,8 @@ class Parser {
 
         if (!_getValue().equals(";")) {
             _compileExpression();
-            // and push some stuff as the return value;
         } else {
-            codeWriter.writePush("CONST", 0);
+            codeWriter.writePush("CONSTANT", 0);
         }
         _writeAndAdvance(line, true);
         codeWriter.writeReturn();
@@ -235,19 +248,26 @@ class Parser {
         _writeAndAdvance("<ifStatement>", false);
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
-
         _compileExpression();
+        codeWriter.writeIf("IF_TRUE" + ifEnumerator);
+        codeWriter.writeGoto("IF_FALSE" + ifEnumerator);
+        codeWriter.writeLabel("IF_TRUE" + ifEnumerator);
+        Integer ifEnum = ifEnumerator;
+        ifEnumerator++;
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
         _compileStatements();
-
+        codeWriter.writeGoto("IF_END" + ifEnum);
+        
         _writeAndAdvance(line, true);
         if (_getValue().equals("else")) {
+            codeWriter.writeLabel("IF_FALSE" + ifEnum);
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
             _compileStatements();
             _writeAndAdvance(line, true);
         }
+        codeWriter.writeLabel("IF_END" + ifEnum);
         _writeAndAdvance("</ifStatement>", false);
     }
 
@@ -270,13 +290,15 @@ class Parser {
             String op = _getValue();
             _writeAndAdvance(line, true);
             _compileTerm();
-            codeWriter.writeArithmetic(op);
+            codeWriter.writeArithmetic(op.equals("-") ? "NEG" : op);
         } else if (_getValue().equals("(")) {
             _writeAndAdvance(line, true);
             _compileExpression();
             _writeAndAdvance(line, true);
         } else if (!Arrays.asList("keyword", "stringConstant", "integerConstant").contains(_getType())) {
+            String method = _getValue();
             _writeAndAdvance(line, true);
+            String context = "";
             if (_getValue().equals("[")) {
                 _writeAndAdvance(line, true);
                 _compileExpression();
@@ -284,18 +306,36 @@ class Parser {
             } else if (_getValue().equals("(")) {
                 _writeAndAdvance(line, true);
                 _compileExpressionList();
+                // I think some other stuff needs to happen here for method;
+                // codeWriter.writeCall(method, expressionsCount);
                 _writeAndAdvance(line, true);
             } else if (_getValue().equals(".")) {
                 _writeAndAdvance(line, true);
+                context = method;
+                method = _getValue();
                 _writeAndAdvance(line, true);
                 _writeAndAdvance(line, true);
                 _compileExpressionList();
+
+                // Code Writer:
+                codeWriter.writeCall(context + "." + method, expressionsCount);
                 _writeAndAdvance(line, true);
+            } else {
+                String variable = method;
+                codeWriter.writePush(_getSegment(symbols.KindOf(variable)), symbols.IndexOf(variable));
             }
         } else {
             if (_getType().equals("integerConstant")) {
-                codeWriter.writePush("CONST", Integer.parseInt(_getValue()));
-            } // other stuff for keyword constant and string.
+                codeWriter.writePush("CONSTANT", Integer.parseInt(_getValue()));
+            } else if (_getType().equals("keyword")) {
+                if (_getValue().equals("true")){
+                    codeWriter.writePush("CONSTANT", 0);
+                    codeWriter.writeArithmetic("~");
+                } else if (_getValue().equals("false")){
+                    codeWriter.writePush("CONSTANT", 0);
+                }
+
+            }
             _writeAndAdvance(line, true);
         }
         _writeAndAdvance("</term>", false);   
@@ -315,6 +355,18 @@ class Parser {
             }
         }
         _writeAndAdvance("</expressionList>", false);
+    }
+
+    private String _getSegment(String kind) {
+        if (kind.equals("CONSTANT")) {
+            return "CONSTANT";
+        } else if (kind.equals("VAR")) {
+            return "LOCAL";
+        } else if (kind.equals("ARG")) {
+            return "ARGUMENT";
+        } else {
+            return "";
+        }
     }
 
     private String _getValue() {
@@ -338,4 +390,5 @@ class Parser {
         if (shouldAdvance)
             advance();
     }
+
 }

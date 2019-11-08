@@ -400,10 +400,8 @@
 <parameterList>
 <keyword> int </keyword>
 <identifier> startAddress </identifier>
-<symbol> , </symbol>
 <keyword> int </keyword>
 <identifier> length </identifier>
-<symbol> , </symbol>
 <keyword> int </keyword>
 <identifier> value </identifier>
 </parameterList>
