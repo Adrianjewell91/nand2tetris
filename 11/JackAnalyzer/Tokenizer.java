@@ -91,7 +91,7 @@ class Tokenizer {
     }
     
     private String _nextToken() {
-        line = line.trim();
+        // line = line.trim();
         switch (_analyzeCharacter()) {
             // Map the integers for readability:
             case 0:
@@ -133,6 +133,7 @@ class Tokenizer {
             }
             break;
         }
+        line=line.trim();
         return token;
     }
 
@@ -149,7 +150,9 @@ class Tokenizer {
 
     private Integer _analyzeCharacter() {
         Matcher keywordMatcher = keyword.matcher(line);
-        if (keywordMatcher.find()) {
+        // add something make sure it's actually a symbol.
+        // if (keywordMatcher.find()) {
+        if (keywordMatcher.find() && (line.charAt(keywordMatcher.end()) == ' ' || !line.substring(keywordMatcher.start(), keywordMatcher.end()).equals("do"))) {
             // Map these for readability to a map file.
             return 0; // KEYWORD
         } else if (symbols.contains(line.substring(0,1))) {

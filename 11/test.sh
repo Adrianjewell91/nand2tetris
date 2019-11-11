@@ -5,4 +5,6 @@ TextComparer.sh Pong/MainAUTO.txt Pong/Main.vm;
 TextComparer.sh Pong/BatAUTO.txt Pong/Bat.vm;
 TextComparer.sh Pong/BallAUTO.txt Pong/Ball.vm;
 TextComparer.sh Pong/PongGameAUTO.txt Pong/PongGame.vm;
-
+TextComparer.sh Average/MainAUTO.txt Average/Main.vm;
+TextComparer.sh ConvertToBin/MainAUTO.txt ConvertToBin/Main.vm;
+TextComparer.sh ComplexArrays/MainAUTO.txt ComplexArrays/Main.vm;
