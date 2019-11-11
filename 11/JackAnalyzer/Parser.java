@@ -56,19 +56,17 @@ class Parser {
         _writeAndAdvance(line, true);
 
         _compileClassVarDec();
-        // Write some allocation code here.
-
         _compileSubroutine();
+        
         _writeAndAdvance(line, true);
-
         _writeAndAdvance("</class>", false);
         codeWriter.close();
         writer.close();
     }
 
     private void _compileClassVarDec() {
-        String kind = _getValue();
         while (Arrays.asList("static", "field").contains(_getValue())) {
+            String kind = _getValue();
             _writeAndAdvance("<classVarDec>", false);
             _writeAndAdvance(line, true); // static or field
             String type = _getValue();
@@ -92,7 +90,7 @@ class Parser {
             String type = _getValue();
             whileEnumerator = 0;
             ifEnumerator = 0;
-            symbols.startSubroutine();
+            symbols.startSubroutine(type.equals("method"));
 
             _writeAndAdvance("<subroutineDec>", false);
             _writeAndAdvance(line, true);
@@ -107,7 +105,7 @@ class Parser {
             codeWriter.writeFunction(this.className + "." + name, symbols.VarCount("VAR"));
 
             if (type.equals("constructor")) {
-                int count = symbols.VarCount("STATIC") + symbols.VarCount("FIELD");
+                int count = symbols.VarCount("FIELD");
                 codeWriter.writePush("CONSTANT", count);
                 codeWriter.writeCall("Memory.alloc", 1);
                 codeWriter.writePop("POINTER", 0);
@@ -187,7 +185,7 @@ class Parser {
     private void _compileDo() {
         // The situations are:
         // 1. A library function
-        // 2. An object function.
+        // 2. An object function with or without variables.
         // 3 A method on 'this', with no context.
 
         _writeAndAdvance("<doStatement>", false);
@@ -205,20 +203,21 @@ class Parser {
         }
 
         _writeAndAdvance(line, true);
-        _compileExpressionList();
-
+        Integer initialExpressionsCount = 0;
+        
         String objectLookUp = symbols.TypeOf(context);
         if (context.equals("")) {
-            // Push pointer 0, and something else
             codeWriter.writePush("POINTER", 0);
-            expressionsCount++;
+            initialExpressionsCount++;
             context = this.className;
         } else if (!objectLookUp.equals("NONE")) {
-            expressionsCount++;
+            initialExpressionsCount++;
             codeWriter.writePush(_getSegment(symbols.KindOf(context)), symbols.IndexOf(context));
             context = objectLookUp;
         }
 
+        _compileExpressionList(initialExpressionsCount);
+        
         String name = context.equals("") ? method : context + "." + method;
         codeWriter.writeCall(name, expressionsCount);
         codeWriter.writePop("TEMP", 0);
@@ -368,8 +367,6 @@ class Parser {
             } else if (_getValue().equals("(")) {
                 _writeAndAdvance(line, true);
                 _compileExpressionList();
-                // I think some other stuff needs to happen here for method;
-                // codeWriter.writeCall(method, expressionsCount);
                 _writeAndAdvance(line, true);
             } else if (_getValue().equals(".")) {
                 _writeAndAdvance(line, true);
@@ -377,10 +374,24 @@ class Parser {
                 method = _getValue();
                 _writeAndAdvance(line, true);
                 _writeAndAdvance(line, true);
-                _compileExpressionList();
+                
+                Integer initialExpressionsCount = 0;
 
-                // Code Writer:
-                codeWriter.writeCall(context + "." + method, expressionsCount);
+                String objectLookUp = symbols.TypeOf(context);
+                if (context.equals("")) {
+                    codeWriter.writePush("POINTER", 0);
+                    initialExpressionsCount++;
+                    context = this.className;
+                } else if (!objectLookUp.equals("NONE")) {
+                    initialExpressionsCount++;
+                    codeWriter.writePush(_getSegment(symbols.KindOf(context)), symbols.IndexOf(context));
+                    context = objectLookUp;
+                }
+
+                _compileExpressionList(initialExpressionsCount);
+
+                String name = context.equals("") ? method : context + "." + method;
+                codeWriter.writeCall(name, expressionsCount);
                 _writeAndAdvance(line, true);
             } else {
                 String variable = method;
@@ -396,7 +407,7 @@ class Parser {
                 } else if (_getValue().equals("false")) {
                     codeWriter.writePush("CONSTANT", 0);
                 } else if (_getValue().equals("this")) {
-                    codeWriter.writePush("pointer", 0);
+                    codeWriter.writePush("POINTER", 0);
                 }
             } else if (_getType().equals("stringConstant")) {
                 // Get the string with the proper amount of spaces.
@@ -416,7 +427,11 @@ class Parser {
     }
 
     private void _compileExpressionList() {
-        expressionsCount = 0;
+        _compileExpressionList(0);
+    }
+
+    private void _compileExpressionList(Integer initialExpressionsCount) {
+        expressionsCount = initialExpressionsCount;
         _writeAndAdvance("<expressionList>", false);
         if (!_getValue().equals(")")) {
             expressionsCount++;
@@ -440,6 +455,8 @@ class Parser {
             return "ARGUMENT";
         } else if (kind.equals("FIELD")) {
             return "THIS";
+        } else if (kind.equals("STATIC")) {
+            return "STATIC";
         } else {
             return "";
         }

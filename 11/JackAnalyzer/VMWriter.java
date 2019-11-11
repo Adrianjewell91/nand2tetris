@@ -38,6 +38,8 @@ class VMWriter {
             writer.writeToken("eq");
         } else if (operator.equals("/")) {
             writer.writeToken("call Math.divide 2");
+        } else if (operator.equals("|")) {
+            writer.writeToken("or");
         } 
         
     }

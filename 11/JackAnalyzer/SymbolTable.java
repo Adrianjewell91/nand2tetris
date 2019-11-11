@@ -16,12 +16,12 @@ class SymbolTable {
     Integer subroutineVars = 0;
     Integer subroutineArgs = 0;
 
-    public void startSubroutine () { 
+    public void startSubroutine (boolean isMethod) { 
         subroutineNameToType = new HashMap<String, String>();
         subroutineNameToKind = new HashMap<String, String>();
         subroutineNameToIndex = new HashMap<String, Integer>();
         subroutineVars = 0;
-        subroutineArgs = 0;
+        subroutineArgs = isMethod ? 1 : 0;
     }
     
     public void Define(String name, String type, String kind) { 
