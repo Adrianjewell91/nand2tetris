@@ -150,8 +150,6 @@ class Tokenizer {
 
     private Integer _analyzeCharacter() {
         Matcher keywordMatcher = keyword.matcher(line);
-        // add something make sure it's actually a symbol.
-        // if (keywordMatcher.find()) {
         if (keywordMatcher.find() && (line.charAt(keywordMatcher.end()) == ' ' || !line.substring(keywordMatcher.start(), keywordMatcher.end()).equals("do"))) {
             // Map these for readability to a map file.
             return 0; // KEYWORD

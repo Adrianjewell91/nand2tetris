@@ -408,6 +408,8 @@ class Parser {
                     codeWriter.writePush("CONSTANT", 0);
                 } else if (_getValue().equals("this")) {
                     codeWriter.writePush("POINTER", 0);
+                } else if (_getValue().equals("null")) {
+                    codeWriter.writePush("CONSTANT", 0);
                 }
             } else if (_getType().equals("stringConstant")) {
                 // Get the string with the proper amount of spaces.
