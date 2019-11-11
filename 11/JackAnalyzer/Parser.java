@@ -15,6 +15,7 @@ class Parser {
     VMWriter codeWriter;
     private SymbolTable symbols = new SymbolTable();
     private final Pattern valuePattern = Pattern.compile("\\s.*\\s");
+    // private final Pattern valuePattern = Pattern.compile(">.*<");
     private final Pattern typePattern = Pattern.compile("^<.*>\\s");
 
     private Integer whileEnumerator = 0;
@@ -32,8 +33,8 @@ class Parser {
         writer = new Writer(output);
         codeWriter = new VMWriter(output.split("\\.")[0] + ".vm");
         // skip "<tokens>"" and move to first token.
-        advance(); 
-        advance(); 
+        advance();
+        advance();
     }
 
     public Boolean hasMoreLines() {
@@ -55,7 +56,7 @@ class Parser {
         _writeAndAdvance(line, true);
 
         _compileClassVarDec();
-        // Write some allocation code here. 
+        // Write some allocation code here.
 
         _compileSubroutine();
         _writeAndAdvance(line, true);
@@ -82,12 +83,6 @@ class Parser {
                     break;
                 advance();
             }
-            // while (true) {
-            //     _writeAndAdvance(line, false);
-            //     if (_getValue().equals(";"))
-            //         break;
-            //     advance();
-            // }
             _writeAndAdvance("</classVarDec>", true);
         }
     }
@@ -105,17 +100,20 @@ class Parser {
             String name = _getValue();
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
-            _compileParameterList(); 
+            _compileParameterList();
             _writeAndAdvance("<subroutineBody>", false);
             _writeAndAdvance(line, true);
             _compileVarDec();
             codeWriter.writeFunction(this.className + "." + name, symbols.VarCount("VAR"));
-            
+
             if (type.equals("constructor")) {
                 int count = symbols.VarCount("STATIC") + symbols.VarCount("FIELD");
                 codeWriter.writePush("CONSTANT", count);
                 codeWriter.writeCall("Memory.alloc", 1);
-                codeWriter.writePop("POINTER", 0); 
+                codeWriter.writePop("POINTER", 0);
+            } else if (type.equals("method")) {
+                codeWriter.writePush("ARGUMENT", 0);
+                codeWriter.writePop("POINTER", 0);
             }
             _compileStatements();
             _writeAndAdvance(line, true);
@@ -128,12 +126,13 @@ class Parser {
         _writeAndAdvance("<parameterList>", false);
         while (!_getValue().equals(")")) {
             // Two passes, one for the type and one for the name.
-            String type = _getValue(); 
+            String type = _getValue();
             _writeAndAdvance(line, true);
             String name = _getValue();
             _writeAndAdvance(line, true);
             symbols.Define(name, type, "ARG");
-            if (_getValue().equals(",")) advance();
+            if (_getValue().equals(","))
+                advance();
         }
         _writeAndAdvance("</parameterList>", false);
         _writeAndAdvance(line, true);
@@ -144,12 +143,12 @@ class Parser {
             _writeAndAdvance("<varDec>", false);
             _writeAndAdvance(line, true); // var
             String type = _getValue();
-            _writeAndAdvance(line, true); //type
-            
+            _writeAndAdvance(line, true); // type
+
             while (true) {
                 String name = _getValue();
                 symbols.Define(name, type, "VAR");
-                _writeAndAdvance(line, true); //name;
+                _writeAndAdvance(line, true); // name;
                 _writeAndAdvance(line, false); // , or ;
                 if (_getValue().equals(";"))
                     break;
@@ -186,10 +185,17 @@ class Parser {
     }
 
     private void _compileDo() {
+        // The situations are:
+        // 1. A library function
+        // 2. An object function.
+        // 3 A method on 'this', with no context.
+
         _writeAndAdvance("<doStatement>", false);
         _writeAndAdvance(line, true);
+
         String method = _getValue();
         String context = "";
+
         _writeAndAdvance(line, true);
         if (_getValue().equals(".")) {
             _writeAndAdvance(line, true);
@@ -197,15 +203,22 @@ class Parser {
             method = _getValue();
             _writeAndAdvance(line, true);
         }
+
         _writeAndAdvance(line, true);
         _compileExpressionList();
 
         String objectLookUp = symbols.TypeOf(context);
-        if (!objectLookUp.equals("NONE")) {
+        if (context.equals("")) {
+            // Push pointer 0, and something else
+            codeWriter.writePush("POINTER", 0);
+            expressionsCount++;
+            context = this.className;
+        } else if (!objectLookUp.equals("NONE")) {
             expressionsCount++;
             codeWriter.writePush(_getSegment(symbols.KindOf(context)), symbols.IndexOf(context));
             context = objectLookUp;
         }
+
         String name = context.equals("") ? method : context + "." + method;
         codeWriter.writeCall(name, expressionsCount);
         codeWriter.writePop("TEMP", 0);
@@ -214,30 +227,39 @@ class Parser {
         _writeAndAdvance("</doStatement>", false);
     }
 
-    //Helper for _compileDo:
-    // private String _getMethodToCall() {
-        
-    // }
-
     private void _compileLet() {
         _writeAndAdvance("<letStatement>", false);
         _writeAndAdvance(line, true);
-        
-        // CodeWriter:
+
         int idx = symbols.IndexOf(_getValue());
         String segment = _getSegment(symbols.KindOf(_getValue()));
+        String varName = _getValue();
+        Boolean isArray = false;
 
         _writeAndAdvance(line, true);
         if (_getValue().equals("[")) {
+            isArray = true;
             _writeAndAdvance(line, true);
             _compileExpression();
+            codeWriter.writePush(_getSegment(symbols.KindOf(varName)), symbols.IndexOf(varName));
+            codeWriter.writeArithmetic("+");
             _writeAndAdvance(line, true);
         }
 
         _writeAndAdvance(line, true);
         _compileExpression();
-        codeWriter.writePop(segment, idx);
+
+        if (isArray) {
+            codeWriter.writePop("TEMP", 0);
+            codeWriter.writePop("POINTER", 1);
+            codeWriter.writePush("TEMP", 0);
+            codeWriter.writePop("THAT", 0);
+        } else {
+            codeWriter.writePop(segment, idx);
+        }
+
         _writeAndAdvance(line, true);
+
         _writeAndAdvance("</letStatement>", false);
     }
 
@@ -288,17 +310,20 @@ class Parser {
         _writeAndAdvance(line, true);
         _writeAndAdvance(line, true);
         _compileStatements();
-        codeWriter.writeGoto("IF_END" + ifEnum);
-        
+
         _writeAndAdvance(line, true);
         if (_getValue().equals("else")) {
+            codeWriter.writeGoto("IF_END" + ifEnum);
             codeWriter.writeLabel("IF_FALSE" + ifEnum);
             _writeAndAdvance(line, true);
             _writeAndAdvance(line, true);
             _compileStatements();
             _writeAndAdvance(line, true);
+            codeWriter.writeLabel("IF_END" + ifEnum);
+        } else {
+            codeWriter.writeLabel("IF_FALSE" + ifEnum);
+
         }
-        codeWriter.writeLabel("IF_END" + ifEnum);
         _writeAndAdvance("</ifStatement>", false);
     }
 
@@ -331,8 +356,14 @@ class Parser {
             _writeAndAdvance(line, true);
             String context = "";
             if (_getValue().equals("[")) {
+                // right here, I'm keying into the array.
                 _writeAndAdvance(line, true);
                 _compileExpression();
+                String variable = method;
+                codeWriter.writePush(_getSegment(symbols.KindOf(variable)), symbols.IndexOf(variable));
+                codeWriter.writeArithmetic("+");
+                codeWriter.writePop("POINTER", 1);
+                codeWriter.writePush("THAT", 0);
                 _writeAndAdvance(line, true);
             } else if (_getValue().equals("(")) {
                 _writeAndAdvance(line, true);
@@ -359,17 +390,29 @@ class Parser {
             if (_getType().equals("integerConstant")) {
                 codeWriter.writePush("CONSTANT", Integer.parseInt(_getValue()));
             } else if (_getType().equals("keyword")) {
-                if (_getValue().equals("true")){
+                if (_getValue().equals("true")) {
                     codeWriter.writePush("CONSTANT", 0);
                     codeWriter.writeArithmetic("~");
-                } else if (_getValue().equals("false")){
+                } else if (_getValue().equals("false")) {
                     codeWriter.writePush("CONSTANT", 0);
+                } else if (_getValue().equals("this")) {
+                    codeWriter.writePush("pointer", 0);
                 }
-
+            } else if (_getType().equals("stringConstant")) {
+                // Get the string with the proper amount of spaces.
+                Integer length = _getValue().length();
+                codeWriter.writePush("CONSTANT", length);
+                codeWriter.writeCall("String.new", 1);
+                String str = _getValue();
+                for (int i = 0; i < length; i++) {
+                    int j = (int) str.charAt(i);
+                    codeWriter.writePush("CONSTANT", j);
+                    codeWriter.writeCall("String.appendChar", 2);
+                }
             }
             _writeAndAdvance(line, true);
         }
-        _writeAndAdvance("</term>", false);   
+        _writeAndAdvance("</term>", false);
     }
 
     private void _compileExpressionList() {
@@ -403,7 +446,7 @@ class Parser {
     }
 
     private String _getValue() {
-        return _parseHelper(valuePattern, 0, 0);
+        return _parseHelper(valuePattern, 1, -1);
     }
 
     private String _getType() {
@@ -413,7 +456,7 @@ class Parser {
     private String _parseHelper(Pattern pattern, Integer offsetLeft, Integer offsetRight) {
         java.util.regex.Matcher m = pattern.matcher(line);
         if (m.find()) {
-            return line.substring(m.start() + offsetLeft, m.end() + offsetRight).trim();
+            return line.substring(m.start() + offsetLeft, m.end() + offsetRight);
         }
         return "";
     }
