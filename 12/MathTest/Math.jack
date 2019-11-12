@@ -38,12 +38,12 @@ class Math {
      // I'm not handling negative numbers correctly.
     function int multiply(int x, int y) {
         var int sum, j, temp, neg;
-        if (((x < 0) & (y > 0)) | ((y < 0) & (x > 0))) {
-            let neg = -1;
-        }
-
-        let x = Math.abs(x);
-        let y = Math.abs(y);
+        //if (((x < 0) & (y > 0)) | ((y < 0) & (x > 0))) {
+        //    let neg = -1;
+        //}
+//
+        //let x = Math.abs(x);
+        //let y = Math.abs(y);
 
         if (x < y) {
             let temp = x;
@@ -51,7 +51,8 @@ class Math {
             let y = temp;
         }
         
-        while (j < 15) {
+        while (j < 16) {
+        //while (j < 15) {
             if (bits[j] & y = bits[j]) {
                 let sum = sum + x;
             }
@@ -59,9 +60,9 @@ class Math {
             let j = j + 1;
         }
 
-        if (neg = -1) {
-            let sum = -sum;
-        }
+        //if (neg = -1) {
+        //    let sum = -sum;
+        //}
 
         return sum;
     }
