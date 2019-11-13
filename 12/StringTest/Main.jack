@@ -5,7 +5,6 @@
 
 /** Test program for the OS String class. */
 class Main {
-
     /** Performs various string manipulations and displays their results. */
     function void main() {
         var String s;
@@ -29,12 +28,12 @@ class Main {
         do Output.printString("setInt: ");
         do Output.printString(i);                // setInt: 12345
         do Output.println();
-
+//
         do i.setInt(-32767);
         do Output.printString("setInt: ");
         do Output.printString(i);                // setInt: -32767
         do Output.println();
-        
+        //
         do Output.printString("length: ");
         do Output.printInt(s.length());          // length: 5
         do Output.println();
