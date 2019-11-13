@@ -15,12 +15,20 @@
  * as a small filled square, indicates where the next character will be displayed.
  */
 class Output {
-
     // Character map for displaying characters
     static Array charMaps; 
+    static Array columnMap;
+    static int row;
+    static int col;
 
     /** Initializes the screen, and locates the cursor at the screen's top-left. */
     function void init() {
+        do Screen.clearScreen();
+        do Output.initMap();
+        //do Output.initColumnMap();
+        let row = 0;
+        let col = 0;
+        return;
     }
 
     // Initializes the character map array
@@ -71,7 +79,7 @@ class Output {
         do Output.create(64,30,51,51,59,59,59,27,3,30,0,0);  // @
         do Output.create(63,30,51,51,24,12,12,0,12,12,0,0);  // ?
 
-        do Output.create(65,0,0,0,0,0,0,0,0,0,0,0);          // A ** TO BE FILLED **
+        do Output.create(65,0,34,34,34,0,8,8,0,34,28,0);          // A ** TO BE FILLED **
         do Output.create(66,31,51,51,51,31,51,51,51,31,0,0); // B
         do Output.create(67,28,54,35,3,3,3,35,54,28,0,0);    // C
         do Output.create(68,15,27,51,51,51,51,51,27,15,0,0); // D
@@ -176,28 +184,116 @@ class Output {
     /** Moves the cursor to the j-th column of the i-th row,
      *  and erases the character displayed there. */
     function void moveCursor(int i, int j) {
+        var int location, r, c, j, section;
+        var int newVal, current;
+
+        let row = i;
+        let col = j; 
+        let r = row * 11;
+        let c = col / 2;
+        let section = col - (c * 2);
+
+        while (j < 11) {
+            let location = 16384 + ((r + j) * 32) + c;
+            let current = Memory.peek(location);
+            if (section = 0) {
+                let current = current / 128;
+                let current = current * 128;
+                let newVal = current + 0;
+            } else {
+                let current = (current & 127);
+                let newVal = current + (0 * 128);
+            }
+            do Memory.poke(location, newVal);
+            let j = j + 1;
+        }
+
+        return; 
     }
 
     /** Displays the given character at the cursor location,
      *  and advances the cursor one column forward. */
-    function void printChar(char c) {
+//0 0th reg, 1st half // get the register by doing (col / 2)
+//1 0th reg, 2nd half // all odd numbers get the second half, or rather if the remainder is 1 then take the second half.
+//2 1st reg, 1st half 
+//3 1st reg, 2nd half
+//4 2nd reg, 1st half
+//5 2nd reg, 2nd half
+//6 3rd reg,
+
+// How to input into either the first or second? 
+// If I'm inputting into the second half, the number needs to be multplied by 128 then added to what is currently there. 
+// Then that number is poked into the address determined by the previous code. 
+// If I'm writing to the first half, I have to save the second half. 
+// So divide the second half 128, multiply it by 128, 
+// then add it to the current number to be added, 
+// and store this new number into the register. 
+    function void printChar(char ch) {
+        var Array map;
+        var int location, r, c, j, section;
+        var int newVal, current;
+
+        let map = charMaps[ch];
+        let r = row * 11;
+        let c = col / 2;
+        let section = col - (c * 2);
+
+        while (j < 11) {
+            let location = 16384 + ((r + j) * 32) + c;
+            let current = Memory.peek(location);
+            if (section = 0) {
+                let current = current / 128;
+                let current = current * 128;
+                let newVal = current + map[j];
+            } else {
+                let current = (current & 127);
+                let newVal = current + (map[j] * 256);
+            }
+            do Memory.poke(location, newVal);
+            let j = j + 1;
+        }
+
+        if (row = 22) {
+            let row = 0;
+        }
+        if (col = 63) {
+            let col = -1;
+        }
+
+        do Output.moveCursor(row, col + 1);
+        return; 
     }
 
     /** displays the given string starting at the cursor location,
      *  and advances the cursor appropriately. */
     function void printString(String s) {
+        var int i;
+        let i = 0;
+        while (i < s.length()) {
+            do Output.printChar(s.charAt(i));
+            let i = i + 1;
+        }
+        return;
     }
 
     /** Displays the given integer starting at the cursor location,
      *  and advances the cursor appropriately. */
     function void printInt(int i) {
+        return;
     }
+    
 
     /** Advances the cursor to the beginning of the next line. */
     function void println() {
+        if (row = 22) {
+            let row = 0;
+        }
+        do Output.moveCursor(row + 1, 0);
+        return;
     }
 
     /** Moves the cursor one column back. */
     function void backSpace() {
+        return;
     }
 }
